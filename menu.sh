@@ -239,6 +239,7 @@ else
 
   if [[ $SLEEP_COUNTER -gt 600 ]]; then
     echo ""
+    echo "Build timeout occured"
     echo "Something seems to have gone wrong when rebuilding the menu docker images."
     echo "API Rebuild: $API_REBUILD_DONE"
     echo "PyCLI Rebuild: $PYCLI_REBUILD_DONE"

@@ -30,14 +30,17 @@ def main():
   global apiCheckBuild
   global apiBuildOutput
   global selectedServices
-  global serviceConfigurations
   global hasIssuesChecked
+  global buildOptions
 
   # Runtime vars
   menu = []
   selectedServices = []
-  serviceConfigurations = {
-    "services": {}
+  buildOptions = {
+    "selectedServices": [],
+    "serviceConfigurations": {
+      "services": {}
+    }
   }
   hasIssuesChecked = False
   apiServicesList = None
@@ -79,7 +82,7 @@ def main():
   def checkForIssues():
     try:
       global apiCheckBuild
-      apiCheckBuild = checkBuild(os.getenv('API_ADDR'), selectedServices, serviceConfigurations)
+      apiCheckBuild = checkBuild(os.getenv('API_ADDR'), selectedServices, buildOptions["serviceConfigurations"])
       return True
     except Exception as err: 
       print("Issue checking build:")
@@ -87,11 +90,34 @@ def main():
       input("Press Enter to continue...")
       return False
 
+  def executeServiceOptions():
+    global buildOptions
+    menuItem = menu[selection]
+    serviceName = menuItem[1]
+    if "validOptions" in menuItem[2] and not menuItem[2]["validOptions"] == False:
+      execGlobals = {
+        "validMenuItems": [],
+        "toRun": "runOptionsMenu",
+        "currentServiceName": serviceName,
+        "apiBuildOptions": apiServicesOptions['json'][serviceName],
+        "apiServicesOptions": apiServicesOptions['json'],
+        "renderMode": renderMode,
+        "buildOptions": buildOptions
+      }
+      execLocals = locals()
+      optionsScriptPath = "./serviceOptions/options_screen.py"
+      with open(optionsScriptPath, "rb") as pythonDynamicImportFile:
+        code = compile(pythonDynamicImportFile.read(), optionsScriptPath, "exec") # Finish here
+        exec(code, execGlobals, execLocals)
+      mainRender(menu, selection, 1)
+    else:
+      return True
+
   def buildServices():
     try:
       if len(selectedServices) > 0:
         global apiBuildOutput
-        apiBuildOutput = saveBuild(os.getenv('API_ADDR'), selectedServices, serviceConfigurations)
+        apiBuildOutput = saveBuild(os.getenv('API_ADDR'), selectedServices, buildOptions["serviceConfigurations"])
         return True
       else:
         print("No items selected")
@@ -164,14 +190,12 @@ def main():
           # #####
 
           # Options and issues
-          # if "options" in menuItem[2] and not menuItem[2]["options"] == None:
-          #   toPrint = toPrint + '{t.blue_on_black} {raf}{raf}{t.normal}'.format(t=term, raf=specialChars[renderMode]["rightArrowFull"])
-          #   toPrint = toPrint + ' {t.white_on_black} Options {t.normal}'.format(t=term)
-          # else:
-          #   for i in range(optionsLength):
-          #     toPrint += " "
-          for i in range(optionsLength): # Skip rendering for now.
-            toPrint += " "
+          if "validOptions" in menuItem[2] and not menuItem[2]["validOptions"] == False:
+            toPrint = toPrint + '{t.blue_on_black} {raf}{raf}{t.normal}'.format(t=term, raf=specialChars[renderMode]["rightArrowFull"])
+            toPrint = toPrint + ' {t.white_on_black} Options {t.normal}'.format(t=term)
+          else:
+            for i in range(optionsLength):
+              toPrint += " "
 
           for i in range(optionsIssuesSpace):
             toPrint += " "
@@ -381,7 +405,25 @@ def main():
 
           if service in apiServicesOptions['json']:
             menu[-1][2]["options"] = apiServicesOptions['json'][service]
+            execGlobals = {
+              "validMenuItems": [],
+              "toRun": "createMenuOptions",
+              "currentServiceName": service,
+              "apiBuildOptions": apiServicesOptions['json'][service],
+              "apiServicesOptions": apiServicesOptions['json']
+            }
+            execLocals = locals()
+            optionsScriptPath = "./serviceOptions/options_screen.py"
+            with open(optionsScriptPath, "rb") as pythonDynamicImportFile:
+              code = compile(pythonDynamicImportFile.read(), optionsScriptPath, "exec") # Finish here
+              exec(code, execGlobals, execLocals)
+            menu[-1][2]["validOptions"] = False
+            if "validMenuItems" in execGlobals:
+              if len(execGlobals["validMenuItems"]) > 0:
+                menu[-1][2]["validOptions"] = True
         except Exception as err:
+          print(sys.exc_info())
+          traceback.print_exc()
           hasError.append([service, err])
     else:
       print("Menu could not be loaded. API call did not return JSON:")
@@ -439,13 +481,12 @@ def main():
             if key.name == 'KEY_UP':
               selection -= 1
               needsRender = 2
-            # if key.name == 'KEY_RIGHT': # TODO: Implement options
-            #   executeServiceOptions()
+            if key.name == 'KEY_RIGHT': # TODO: Implement options
+              executeServiceOptions()
             if key.name == 'KEY_ENTER':
               if hasIssuesChecked == False:
                 checkForIssues()
                 updateMenuIssues(menu)
-                # input(apiCheckBuild)
                 hasIssuesChecked = True
                 needsRender = 1
               else:
