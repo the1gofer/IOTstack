@@ -24,7 +24,7 @@ const getBuildHistoryList = () => {
   });
 };
 
-const getBuildIssues = ({ selectedServices, serviceConfigurations }) => {
+const getBuildIssues = ({ selectedServices, configurations }) => {
   return new Promise((resolve, reject) => {
     try {
       if (!Array.isArray(selectedServices)) {
@@ -34,7 +34,7 @@ const getBuildIssues = ({ selectedServices, serviceConfigurations }) => {
       const bodyObject = {
         buildOptions: {
           selectedServices,
-          serviceConfigurations
+          configurations
         }
       }
 
@@ -68,7 +68,7 @@ const getBuildIssues = ({ selectedServices, serviceConfigurations }) => {
   });
 };
 
-const createAndBuildStack = ({ selectedServices, serviceConfigurations }) => {
+const createAndBuildStack = ({ selectedServices, configurations }) => {
   return new Promise((resolve, reject) => {
     try {
       if (!Array.isArray(selectedServices)) {
@@ -78,7 +78,7 @@ const createAndBuildStack = ({ selectedServices, serviceConfigurations }) => {
       const bodyObject = {
         buildOptions: {
           selectedServices,
-          serviceConfigurations
+          configurations
         }
       }
 

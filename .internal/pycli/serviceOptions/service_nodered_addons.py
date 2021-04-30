@@ -6,7 +6,6 @@ globals_results = {}
 def main():
   from blessed import Terminal
   from deps.chars import specialChars, commonTopBorder, commonBottomBorder, commonEmptyLine
-  from deps.consts import servicesDirectory, templatesDirectory
   import time
   import subprocess
   import os
@@ -14,11 +13,12 @@ def main():
   global signal
   global mainMenuList
   global currentMenuItemIndex
+  global currentServiceName
   global renderMode
-  global addons
+  global buildOptions
   global paginationSize
   global paginationStartIndex
-  global addonsFile
+  global apiBuildOptions
   global hideHelpText
 
   try: # If not already set, then set it.
@@ -58,7 +58,7 @@ def main():
     global currentMenuItemIndex
     mainRender(1, mainMenuList, currentMenuItemIndex)
 
-  def generateLineText(text, textLength=None, paddingBefore=0, lineLength=64):
+  def generateLineText(text, textLength=None, paddingBefore=0, lineLength=46):
     result = ""
     for i in range(paddingBefore):
       result += " "
@@ -83,7 +83,7 @@ def main():
     print(term.move(hotzoneLocation[0], hotzoneLocation[1]))
 
     if paginationStartIndex >= 1:
-      print(term.center("{b}       {uaf}      {uaf}{uaf}{uaf}                                                   {ual}           {b}".format(
+      print(term.center("{b}       {uaf}      {uaf}{uaf}{uaf}                                 {ual}           {b}".format(
         b=specialChars[renderMode]["borderVertical"],
         uaf=specialChars[renderMode]["upArrowFull"],
         ual=specialChars[renderMode]["upArrowLine"]
@@ -116,14 +116,13 @@ def main():
         print(toPrint)
 
     if paginationStartIndex + paginationSize < len(menu):
-      print(term.center("{b}       {daf}      {daf}{daf}{daf}                                                   {dal}           {b}".format(
+      print(term.center("{b}       {daf}      {daf}{daf}{daf}                                 {dal}           {b}".format(
         b=specialChars[renderMode]["borderVertical"],
         daf=specialChars[renderMode]["downArrowFull"],
         dal=specialChars[renderMode]["downArrowLine"]
       )))
     else:
       print(term.center(commonEmptyLine(renderMode)))
-    print(term.center(commonEmptyLine(renderMode)))
     print(term.center(commonEmptyLine(renderMode)))
 
 
@@ -147,7 +146,7 @@ def main():
       print("")
       print(term.center(commonTopBorder(renderMode)))
       print(term.center(commonEmptyLine(renderMode)))
-      print(term.center("{bv}      Select NodeRed Addons (npm) to install on initial run                     {bv}".format(bv=specialChars[renderMode]["borderVertical"])))
+      print(term.center("{bv}      Select NodeRed Addons (npm) to install on initial run   {bv}".format(bv=specialChars[renderMode]["borderVertical"])))
       print(term.center(commonEmptyLine(renderMode)))
 
     if needsRender >= 1:
@@ -158,22 +157,23 @@ def main():
       if not hideHelpText:
         if term.height < 32:
           print(term.center(commonEmptyLine(renderMode)))
-          print(term.center("{bv}      Not enough vertical room to render controls help text                     {bv}".format(bv=specialChars[renderMode]["borderVertical"])))
+          print(term.center("{bv}   Not enough vertical room to render controls help text {bv}".format(bv=specialChars[renderMode]["borderVertical"])))
           print(term.center(commonEmptyLine(renderMode)))
         else: 
           print(term.center(commonEmptyLine(renderMode)))
-          print(term.center("{bv}                                                                                {bv}".format(bv=specialChars[renderMode]["borderVertical"])))
-          print(term.center("{bv}      Note: After initial startup installation, you must use the Palettes menu  {bv}".format(bv=specialChars[renderMode]["borderVertical"])))
-          print(term.center("{bv}        in the NodeRed WUI to add or remove addons from NodeRed.                {bv}".format(bv=specialChars[renderMode]["borderVertical"])))
-          print(term.center("{bv}                                                                                {bv}".format(bv=specialChars[renderMode]["borderVertical"])))
-          print(term.center("{bv}      Controls:                                                                 {bv}".format(bv=specialChars[renderMode]["borderVertical"])))
-          print(term.center("{bv}      [Space] to select or deselect addon                                       {bv}".format(bv=specialChars[renderMode]["borderVertical"])))
-          print(term.center("{bv}      [Up] and [Down] to move selection cursor                                  {bv}".format(bv=specialChars[renderMode]["borderVertical"])))
-          print(term.center("{bv}      [Tab] Expand or collapse addon menu size                                  {bv}".format(bv=specialChars[renderMode]["borderVertical"])))
-          print(term.center("{bv}      [S] Switch between sorted by checked and sorted alphabetically            {bv}".format(bv=specialChars[renderMode]["borderVertical"])))
-          print(term.center("{bv}      [H] Show/hide this text                                                   {bv}".format(bv=specialChars[renderMode]["borderVertical"])))
-          print(term.center("{bv}      [Enter] to build and save addons list                                     {bv}".format(bv=specialChars[renderMode]["borderVertical"])))
-          print(term.center("{bv}      [Escape] to cancel changes                                                {bv}".format(bv=specialChars[renderMode]["borderVertical"])))
+          print(term.center("{bv}                                                              {bv}".format(bv=specialChars[renderMode]["borderVertical"])))
+          print(term.center("{bv}      Note: After initial startup installation, you must      {bv}".format(bv=specialChars[renderMode]["borderVertical"])))
+          print(term.center("{bv}        use the Palettes menu in the NodeRed WUI to add       {bv}".format(bv=specialChars[renderMode]["borderVertical"])))
+          print(term.center("{bv}        or remove addons from NodeRed.                        {bv}".format(bv=specialChars[renderMode]["borderVertical"])))
+          print(term.center("{bv}                                                              {bv}".format(bv=specialChars[renderMode]["borderVertical"])))
+          print(term.center("{bv}      Controls:                                               {bv}".format(bv=specialChars[renderMode]["borderVertical"])))
+          print(term.center("{bv}      [Space] to select or deselect addon                     {bv}".format(bv=specialChars[renderMode]["borderVertical"])))
+          print(term.center("{bv}      [Up] and [Down] to move selection cursor                {bv}".format(bv=specialChars[renderMode]["borderVertical"])))
+          print(term.center("{bv}      [Tab] Expand or collapse addon menu size                {bv}".format(bv=specialChars[renderMode]["borderVertical"])))
+          print(term.center("{bv}      [H] Show/hide this text                                 {bv}".format(bv=specialChars[renderMode]["borderVertical"])))
+          print(term.center("{bv}      [S] Sort between checked and alphabetical               {bv}".format(bv=specialChars[renderMode]["borderVertical"])))
+          print(term.center("{bv}      [Enter] to build and save addons list                   {bv}".format(bv=specialChars[renderMode]["borderVertical"])))
+          print(term.center("{bv}      [Escape] to cancel changes                              {bv}".format(bv=specialChars[renderMode]["borderVertical"])))
           print(term.center(commonEmptyLine(renderMode)))
           print(term.center(commonEmptyLine(renderMode)))
       print(term.center(commonBottomBorder(renderMode)))
@@ -195,40 +195,42 @@ def main():
   def loadAddonsMenu():
     global mainMenuList
     global installCommand
-    if os.path.exists(addonsFile):
-      with open(r'%s' % addonsFile) as objAddonsFile:
-        addonsLoaded = yaml.load(objAddonsFile)
-        installCommand = addonsLoaded["dockerFileInstallCommand"]
-        defaultOnAddons = addonsLoaded["addons"]["default_on"]
-        defaultOffAddons = addonsLoaded["addons"]["default_off"]
-        if not os.path.exists(serviceService + '/addons_list.yml'):
-          defaultOnAddons.sort()
-          for (index, addonName) in enumerate(defaultOnAddons):
+    global apiBuildOptions
+    global buildOptions
+    npmAddons = apiBuildOptions["nodered_npmSelection"]
+    defaultOnAddons = npmAddons["defaultOn"]
+    defaultOffAddons = npmAddons["defaultOff"]
+    essentialAddons = npmAddons["essentials"] # Not used yet
+
+    if "services" in buildOptions and currentServiceName in buildOptions["configurations"]["services"]:
+      if "addonsList" in buildOptions["configurations"]["services"][currentServiceName]:
+        selectedAddons = buildOptions["configurations"]["services"][currentServiceName]["addonsList"]
+        for (index, addonName) in enumerate(defaultOnAddons):
+          if addonName in selectedAddons:
             mainMenuList.append([addonName, { "checked": True }])
-
-          defaultOffAddons.sort()
-          for (index, addonName) in enumerate(defaultOffAddons):
+          else:
             mainMenuList.append([addonName, { "checked": False }])
-        else:
-          with open(r'%s' % serviceService + '/addons_list.yml') as objSavedAddonsFile:
-            savedAddonsFile = yaml.load(objSavedAddonsFile)
-            savedAddons = savedAddonsFile["addons"]
-            savedAddons.sort()
-            for (index, addonName) in enumerate(savedAddons):
-              mainMenuList.append([addonName, { "checked": True }])
 
-            for (index, addonName) in enumerate(defaultOnAddons):
-              if not addonName in savedAddons:
-                mainMenuList.append([addonName, { "checked": False }])
+        for (index, addonName) in enumerate(defaultOffAddons):
+          if addonName in selectedAddons:
+            mainMenuList.append([addonName, { "checked": True }])
+          else:
+            mainMenuList.append([addonName, { "checked": False }])
+      else:
+        for (index, addonName) in enumerate(defaultOnAddons):
+          mainMenuList.append([addonName, { "checked": True }])
 
-            for (index, addonName) in enumerate(defaultOffAddons):
-              if not addonName in savedAddons:
-                mainMenuList.append([addonName, { "checked": False }])
-            sortBy = 0
-            mainMenuList.sort(key=lambda x: (x[1]["checked"], x[0]), reverse=True)
-
+        for (index, addonName) in enumerate(defaultOffAddons):
+          mainMenuList.append([addonName, { "checked": False }])
     else:
-      print("Error: '{addonsFile}' file doesn't exist.".format(addonsFile=addonsFile))
+      for (index, addonName) in enumerate(defaultOnAddons):
+        mainMenuList.append([addonName, { "checked": True }])
+
+      for (index, addonName) in enumerate(defaultOffAddons):
+        mainMenuList.append([addonName, { "checked": False }])
+
+    sortBy = 0
+    mainMenuList.sort(key=lambda x: (x[1]["checked"], x[0]), reverse=True)
 
   def checkMenuItem(selection):
     global mainMenuList
@@ -239,29 +241,28 @@ def main():
 
   def saveAddonList():
     try:
-      if not os.path.exists(serviceService):
-        os.makedirs(serviceService, exist_ok=True)
-      nodeRedYamlAddonsList = {
-        "version": "1",
-        "application": "IOTstack",
-        "service": "nodered",
-        "comment": "Selected addons",
-        "dockerFileInstallCommand": installCommand,
-        "addons": []
-      }
+      global buildOptions
+      if not "configurations" in buildOptions:
+        buildOptions["configurations"] = {}
+
+      if not "services" in buildOptions["configurations"]:
+        buildOptions["configurations"]["services"] = {}
+
+      if not currentServiceName in buildOptions["configurations"]["services"]:
+        buildOptions["configurations"]["services"][currentServiceName] = {}
+
+      if not "addonsList" in buildOptions["configurations"]["services"][currentServiceName]:
+        buildOptions["configurations"]["services"][currentServiceName]["addonsList"] = []
+
       for (index, addon) in enumerate(mainMenuList):
         if addon[1]["checked"]:
-          nodeRedYamlAddonsList["addons"].append(addon[0])
-
-      with open(r'%s/addons_list.yml' % serviceService, 'w') as outputFile:
-        yaml.dump(nodeRedYamlAddonsList, outputFile)
+          buildOptions["configurations"]["services"][currentServiceName]["addonsList"].append(addon[0])
 
     except Exception as err: 
       print("Error saving NodeRed Addons list", currentServiceName)
       print(err)
+      input("Press Enter to continue...")
       return False
-    global hasRebuiltAddons
-    hasRebuiltAddons = True
     return True
 
 

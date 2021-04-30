@@ -254,13 +254,13 @@ def getBuildServicesOptionsData(host, protocol="http://"):
 
   return res
 
-def saveBuild(host, selectedServices, serviceConfigurations = {}, protocol="http://"):
+def saveBuild(host, selectedServices, configurations = {}, protocol="http://"):
   try:
     url = '{protocol}{host}/build/save'.format(host=host, protocol=protocol)
     requestData = {}
     requestData['buildOptions'] = {}
     requestData['buildOptions']['selectedServices'] = selectedServices
-    requestData['buildOptions']['serviceConfigurations'] = serviceConfigurations
+    requestData['buildOptions']['configurations'] = configurations
 
     apiRequest = requests.post(url = url, json = requestData, timeout = 2)
 
@@ -283,12 +283,12 @@ def saveBuild(host, selectedServices, serviceConfigurations = {}, protocol="http
 
   return res
 
-def checkBuild(host, selectedServices, serviceConfigurations = {}, protocol="http://"):
+def checkBuild(host, selectedServices, configurations = {}, protocol="http://"):
   try:
     requestData = {}
     requestData['buildOptions'] = {}
     requestData['buildOptions']['selectedServices'] = selectedServices
-    requestData['buildOptions']['serviceConfigurations'] = serviceConfigurations
+    requestData['buildOptions']['configurations'] = configurations
     url = '{protocol}{host}/build/dryrun'.format(host=host, protocol=protocol)
 
     apiRequest = requests.post(url = url, json = requestData, timeout = 2)

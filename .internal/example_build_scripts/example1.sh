@@ -17,7 +17,7 @@ HAS_ERROR="false"
 
 # Generate build
 CBRES=$(curl -s \
-  -d '{"buildOptions":{"selectedServices":["mosquitto","nodered","influxdb","grafana"],"serviceConfigurations":{"services":{"nodered":{"devices":["/dev/ttyAMA0:/dev/ttyAMA0","/dev/vcio:/dev/vcio","/dev/gpiomem:/dev/gpiomem"],"addonsList":["node-red-node-pi-gpiod","node-red-contrib-influxdb","node-red-contrib-boolean-logic","node-red-node-rbe","node-red-dashboard"],"loggingEnabled":true,"networks":{"iotstack_nw":true},"networkMode":"unchanged"}},"networks":{},"meta":{}}}}' \
+  -d '{"buildOptions":{"selectedServices":["mosquitto","nodered","influxdb","grafana"],"configurations":{"services":{"nodered":{"devices":["/dev/ttyAMA0:/dev/ttyAMA0","/dev/vcio:/dev/vcio","/dev/gpiomem:/dev/gpiomem"],"addonsList":["node-red-node-pi-gpiod","node-red-contrib-influxdb","node-red-contrib-boolean-logic","node-red-node-rbe","node-red-dashboard"],"loggingEnabled":true,"networks":{"iotstack_nw":true},"networkMode":"unchanged"}},"networks":{},"meta":{}}}}' \
   -H "Content-Type: application/json" \
   -X POST http://$API_HOST/build/save)
 

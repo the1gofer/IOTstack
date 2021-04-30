@@ -72,7 +72,7 @@ const setCommonInterpolations = ({ stringList, inputString }) => {
 
 const setImageTag = ({ buildTemplate, buildOptions, serviceName }) => {
   const serviceTemplate = buildTemplate?.services?.[serviceName];
-  const serviceConfig = buildOptions?.serviceConfigurations?.services?.[serviceName];
+  const serviceConfig = buildOptions?.configurations?.services?.[serviceName];
   const oldImage = serviceTemplate?.image;
 
   if (typeof(serviceTemplate?.image) === 'string' && (typeof(serviceConfig?.tag) === 'string')) {
@@ -85,8 +85,8 @@ const setImageTag = ({ buildTemplate, buildOptions, serviceName }) => {
 };
 
 const setModifiedPorts = ({ buildTemplate, buildOptions, serviceName }) => {
-  const serviceTemplate = buildTemplate?.services?.[serviceName];
-  const serviceConfig = buildOptions?.serviceConfigurations?.services?.[serviceName];
+  const serviceTemplate = buildTemplate?.services?.[serviceName] ?? {};
+  const serviceConfig = buildOptions?.configurations?.services?.[serviceName];
 
   const modifiedPortList = Object.keys(serviceConfig?.ports ?? {});
   let updated = false;
@@ -115,7 +115,7 @@ const setModifiedPorts = ({ buildTemplate, buildOptions, serviceName }) => {
 
 const setLoggingState = ({ buildTemplate, buildOptions, serviceName }) => {
   const serviceTemplate = buildTemplate?.services?.[serviceName];
-  const serviceConfig = buildOptions?.serviceConfigurations?.services?.[serviceName];
+  const serviceConfig = buildOptions?.configurations?.services?.[serviceName];
 
   const currentLogging = Object.keys(serviceTemplate?.logging ?? {});
 
@@ -131,8 +131,8 @@ const setLoggingState = ({ buildTemplate, buildOptions, serviceName }) => {
 };
 
 const setNetworkMode = ({ buildTemplate, buildOptions, serviceName }) => {
-  const serviceTemplate = buildTemplate?.services?.[serviceName];
-  const serviceConfig = buildOptions?.serviceConfigurations?.services?.[serviceName];
+  const serviceTemplate = buildTemplate?.services?.[serviceName] ?? {};
+  const serviceConfig = buildOptions?.configurations?.services?.[serviceName];
 
   const currentNetworkMode = serviceTemplate?.['network_mode'];
 
@@ -159,7 +159,7 @@ const setNetworkMode = ({ buildTemplate, buildOptions, serviceName }) => {
 
 const setNetworks = ({ buildTemplate, buildOptions, serviceName }) => {
   const serviceTemplate = buildTemplate?.services?.[serviceName];
-  const serviceConfig = buildOptions?.serviceConfigurations?.services?.[serviceName];
+  const serviceConfig = buildOptions?.configurations?.services?.[serviceName];
   let updated = false;
 
   const originalNetworks = [ ...serviceTemplate?.networks ?? [] ];
@@ -183,7 +183,7 @@ const setNetworks = ({ buildTemplate, buildOptions, serviceName }) => {
 
 const setVolumes = ({ buildTemplate, buildOptions, serviceName }) => {
   const serviceTemplate = buildTemplate?.services?.[serviceName];
-  const serviceConfig = buildOptions?.serviceConfigurations?.services?.[serviceName];
+  const serviceConfig = buildOptions?.configurations?.services?.[serviceName];
   let updated = false;
 
   if (Array.isArray(serviceConfig?.volumes ?? false)) {
@@ -218,7 +218,7 @@ const setVolumes = ({ buildTemplate, buildOptions, serviceName }) => {
 
 const setEnvironmentVariables = ({ buildTemplate, buildOptions, serviceName }) => {
   const serviceTemplate = buildTemplate?.services?.[serviceName];
-  const serviceConfig = buildOptions?.serviceConfigurations?.services?.[serviceName];
+  const serviceConfig = buildOptions?.configurations?.services?.[serviceName];
   let updated = false;
 
   if (Array.isArray(serviceConfig?.environment ?? false)) {
@@ -253,7 +253,7 @@ const setEnvironmentVariables = ({ buildTemplate, buildOptions, serviceName }) =
 
 const setDevices = ({ buildTemplate, buildOptions, serviceName }) => {
   const serviceTemplate = buildTemplate?.services?.[serviceName];
-  const serviceConfig = buildOptions?.serviceConfigurations?.services?.[serviceName];
+  const serviceConfig = buildOptions?.configurations?.services?.[serviceName];
   let updated = false;
 
   const currentDevices = serviceTemplate?.devices ?? {};

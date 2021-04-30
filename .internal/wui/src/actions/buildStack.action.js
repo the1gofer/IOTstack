@@ -3,10 +3,10 @@ import { createAndBuildStack } from '../services/builds'
 const CREATE_AND_BUILD_STACK = 'CREATE_AND_BUILD_STACK';
 const RESET_STATE_CREATE_AND_BUILD_STACK = 'RESET_STATE_CREATE_AND_BUILD_STACK';
 
-const createAndBuildStackAction = (selectedServices, serviceConfigurations) => {
+const createAndBuildStackAction = (selectedServices, configurations) => {
   return {
     type: CREATE_AND_BUILD_STACK,
-    promise: createAndBuildStack({ selectedServices, serviceConfigurations })
+    promise: createAndBuildStack({ selectedServices, configurations })
   }
 };
 

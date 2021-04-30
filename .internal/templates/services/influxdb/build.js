@@ -122,7 +122,7 @@ const ServiceBuilder = ({
         console.info(`ServiceBuilder:assume() - '${serviceName}' started`);
         let assumptionsMade = 0;
         const { getConfigOptions } = require('./config')({});
-        const servicesConfig = buildOptions?.serviceConfigurations?.services;
+        const servicesConfig = buildOptions?.configurations?.services;
         if (servicesConfig[serviceName] === undefined) {
           servicesConfig[serviceName] = {};
         }

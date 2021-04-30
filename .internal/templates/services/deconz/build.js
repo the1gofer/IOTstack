@@ -79,7 +79,7 @@ fi
           modifiedDevices: setDevices({ buildTemplate: outputTemplateJson, buildOptions, serviceName })
         };
 
-        const selectedDevice = buildOptions?.serviceConfigurations?.services?.[serviceName]?.selectedDevice ?? '';
+        const selectedDevice = buildOptions?.configurations?.services?.[serviceName]?.selectedDevice ?? '';
 
         // Set deconz's selected device device
         const deconzDevicesList = outputTemplateJson?.services?.[serviceName]?.devices ?? [];
@@ -182,12 +182,12 @@ fi
       try {
         console.info(`ServiceBuilder:build() - '${serviceName}' started`);
 
-        if (buildOptions?.serviceConfigurations?.services?.[serviceName]?.selectedDevice ?? false) {
+        if (buildOptions?.configurations?.services?.[serviceName]?.selectedDevice ?? false) {
           postbuildScripts.push({
             serviceName,
             comment: 'Check deconz set env device',
             multilineComment: null,
-            code: checkDeconzDevice(buildOptions?.serviceConfigurations?.services?.[serviceName]?.selectedDevice ?? '/dev/null')
+            code: checkDeconzDevice(buildOptions?.configurations?.services?.[serviceName]?.selectedDevice ?? '/dev/null')
           });
         }
 

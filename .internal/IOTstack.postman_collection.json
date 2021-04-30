@@ -143,7 +143,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"buildOptions\": {\n\t\t\"selectedServices\": [],\n\t\t\"serviceConfigurations\": {}\n\t}\n}",
+							"raw": "{\n\t\"buildOptions\": {\n\t\t\"selectedServices\": [],\n\t\t\"configurations\": {}\n\t}\n}",
 							"options": {
 								"raw": {
 									"language": "json"

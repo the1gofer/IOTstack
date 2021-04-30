@@ -2,7 +2,7 @@
 
 import signal
 
-buildOptions = {}
+buildSettingsConfig = {}
 haltOnErrors = True
 
 # Main wrapper function. Required to make local vars work correctly
@@ -18,7 +18,8 @@ def main():
   global signal
   global apiBuildDockerCompose # The loaded memory YAML of all checked services
   global apiBuildMetadata # The loaded memory YAML of all checked services
-  global apiBuildOptions # Passed in response from the API for all services
+  global apiBuildOptions # Passed in response from the API for this service
+  global apiServicesOptions # Passed in response from the API for all services
   global currentServiceName # Name of the current service
   global haltOnErrors # Turn on to allow erroring
   global buildOptions # Store config changes for build
@@ -60,15 +61,33 @@ def main():
     needsRender = 1
     return True
 
+  def run_nodered_npmSelection():
+    global buildOptions
+    global menu
+    execGlobals = {
+      "validMenuItems": [],
+      "currentServiceName": currentServiceName,
+      "apiBuildOptions": apiBuildOptions,
+      "apiServicesOptions": apiServicesOptions,
+      "renderMode": renderMode,
+      "buildOptions": buildOptions
+    }
+    execLocals = locals()
+    optionsScriptPath = "./serviceOptions/service_nodered_addons.py"
+    with open(optionsScriptPath, "rb") as pythonDynamicImportFile:
+      code = compile(pythonDynamicImportFile.read(), optionsScriptPath, "exec")
+      exec(code, execGlobals, execLocals)
+    mainRender(1, menu, 0)
+
+
   def createMenuOptions():
     global menu
     global apiBuildOptions
     global validMenuItems
-    global buildOptions
     try:
       configOptions = apiBuildOptions
       if "nodered_npmSelection" in configOptions:
-        menu.append(["Select Addons", goBack])
+        menu.append(["Select Addons", run_nodered_npmSelection])
         validMenuItems.append("nodered_npmSelection")
     except:
       pass

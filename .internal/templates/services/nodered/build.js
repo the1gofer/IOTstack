@@ -109,10 +109,11 @@ fi
         }
 
         let addonsSelected = false;
-        const addonsList = buildOptions?.serviceConfigurations?.services?.nodered?.addonsList ?? [];
+        const addonsList = buildOptions?.configurations?.services?.nodered?.addonsList ?? [];
         if (addonsList.length > 0) {
           addonsSelected = true;
         }
+        console.info(`ServiceBuilder:issues() - '${serviceName}' Addons selected: ${addonsList.length}`);
         console.info(`ServiceBuilder:issues() - '${serviceName}' completed`);
         if (!addonsSelected) {
           issues.push({
@@ -154,7 +155,7 @@ fi
     return new Promise((resolve, reject) => {
       try {
         console.info(`ServiceBuilder:build() - '${serviceName}' started`);
-        const addonsList = buildOptions?.serviceConfigurations?.services?.nodered?.addonsList ?? false;
+        const addonsList = buildOptions?.configurations?.services?.nodered?.addonsList ?? false;
         const noderedDockerfileTemplate = path.join(__dirname, settings.paths.buildFiles, 'Dockerfile.template');
         const noderedDockerfileCommandTemplate = require(path.join(__dirname, settings.paths.buildFiles, 'addons.json'));
         const tempDockerfileName = `${fileTimePrefix}_Dockerfile.template`;
@@ -169,7 +170,6 @@ fi
         if (Array.isArray(addonsList)) {
           if (addonsList.length > 0) {
             addonsList.forEach((addon) => {
-              console.log(1111, addon)
               if (noderedDockerfileCommandTemplate.data.unsafeAddons.includes(addon)) {
                 addonDockerUnsafeCommandOutput += `${addon} `;
                 unsafeAddonsCount++;

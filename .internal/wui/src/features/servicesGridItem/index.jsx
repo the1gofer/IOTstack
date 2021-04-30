@@ -35,7 +35,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     dispatchGetServiceMetadata: (serviceName) => dispatch(getServiceMetadataAction(serviceName)),
     dispatchGetServiceConfigOptions: (serviceName) => dispatch(getServiceConfigOptionsAction(serviceName)),
-    dispatchGetBuildIssues: (selectedServices, serviceConfigurations) => dispatch(getBuildIssuesAction(selectedServices, serviceConfigurations)),
+    dispatchGetBuildIssues: (selectedServices, configurations) => dispatch(getBuildIssuesAction(selectedServices, configurations)),
     dispatchAddSelectedService: (serviceName) => dispatch(addSelectedService(serviceName)),
     dispatchRemoveSelectedService: (serviceName) => dispatch(removeSelectedService(serviceName))
   };

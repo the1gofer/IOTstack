@@ -10,7 +10,7 @@ const checkPortConflicts = ({ buildTemplate, buildOptions, serviceName }) => {
   }) ?? [];
 
   // This is for services that have network mode set to host (and ports can't be specified in the docker-compose file)
-  const currentConfiguredServiceExternalPorts = Object.values(buildOptions?.serviceConfigurations?.services?.[serviceName]?.ports ?? [])?.map((port) => {
+  const currentConfiguredServiceExternalPorts = Object.values(buildOptions?.configurations?.services?.[serviceName]?.ports ?? [])?.map((port) => {
     return getExternalPort(port);
   }) ?? [];
 
@@ -39,7 +39,7 @@ const checkPortConflicts = ({ buildTemplate, buildOptions, serviceName }) => {
 };
 
 const getSetPortsByConfigName = ({ buildTemplate, buildOptions, serviceName, configOptions, portName }) => {
-  const serviceConfig = buildOptions?.serviceConfigurations?.services?.[serviceName];
+  const serviceConfig = buildOptions?.configurations?.services?.[serviceName];
   const namedPort = Object.keys(configOptions?.labeledPorts ?? {}).find((ele) => { return configOptions.labeledPorts[ele] === portName; });
   const setPortValue = serviceConfig?.ports?.[namedPort] ?? '';
   const internalPort = setPortValue.split(':')[1];

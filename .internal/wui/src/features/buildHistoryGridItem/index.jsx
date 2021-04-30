@@ -86,7 +86,7 @@ const ServiceItem = (props) => {
     const buildConfig = JSON.parse(modalProps.displayScript);
   
     setSelectedItems_services(buildConfig.selectedServices);
-    setBuildOptions(buildConfig.serviceConfigurations);
+    setBuildOptions(buildConfig.configurations);
     dispatchClearAllSelectedServices();
     buildConfig?.selectedServices?.map((service) => {
       dispatchAddSelectedService(service);

@@ -2,10 +2,10 @@ import { getBuildIssues } from '../services/builds'
 
 const CHECK_BUILD_ISSUES = 'CHECK_BUILD_ISSUES';
 
-const getBuildIssuesAction = (selectedServices, serviceConfigurations) => {
+const getBuildIssuesAction = (selectedServices, configurations) => {
   return {
     type: CHECK_BUILD_ISSUES,
-    promise: getBuildIssues({ selectedServices, serviceConfigurations })
+    promise: getBuildIssues({ selectedServices, configurations })
   }
 };
 

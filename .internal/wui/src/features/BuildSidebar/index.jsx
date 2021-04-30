@@ -231,7 +231,7 @@ const Sidebar = (props) => {
     return {
       dispatchAddTagToHideList: (tag) => dispatch(addTagToHideListAction(tag)),
       dispatchRemoveTagFromHideList: (tag) => dispatch(removeTagFromHideListAction(tag)),
-      dispatchBuildStack: (selectedServices, serviceConfigurations) => dispatch(createAndBuildStackAction(selectedServices, serviceConfigurations)),
+      dispatchBuildStack: (selectedServices, configurations) => dispatch(createAndBuildStackAction(selectedServices, configurations)),
       dispatchGetScriptTemplates: ({ scriptName, options, linkRef }) => dispatch(getScriptFromTemplateAction({ scriptName, options, linkRef })),
       dispatchDownloadBuildFile: ({ build, type, linkRef }) => dispatch(downloadBuildFile({ build, type, linkRef }))
     };

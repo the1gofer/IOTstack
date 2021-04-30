@@ -38,7 +38,7 @@ def main():
   selectedServices = []
   buildOptions = {
     "selectedServices": [],
-    "serviceConfigurations": {
+    "configurations": {
       "services": {}
     }
   }
@@ -63,7 +63,7 @@ def main():
     hideHelpText = False
 
   def hasReportedIssue(serviceName):
-    if not apiCheckBuild == None and 'json' in apiCheckBuild and 'issueList' in apiCheckBuild['json']:
+    if apiCheckBuild != None and 'json' in apiCheckBuild and apiCheckBuild['json'] != None and 'issueList' in apiCheckBuild['json']:
       if len(apiCheckBuild['json']['issueList']['services']) > 0:
         issuesList = apiCheckBuild['json']['issueList']['services']
         for issue in issuesList:
@@ -82,16 +82,19 @@ def main():
   def checkForIssues():
     try:
       global apiCheckBuild
-      apiCheckBuild = checkBuild(os.getenv('API_ADDR'), selectedServices, buildOptions["serviceConfigurations"])
+      apiCheckBuild = checkBuild(os.getenv('API_ADDR'), selectedServices, buildOptions["configurations"])
       return True
     except Exception as err: 
       print("Issue checking build:")
       print(err)
+      print(sys.exc_info())
+      traceback.print_exc()
       input("Press Enter to continue...")
       return False
 
   def executeServiceOptions():
     global buildOptions
+    global hasIssuesChecked
     menuItem = menu[selection]
     serviceName = menuItem[1]
     if "validOptions" in menuItem[2] and not menuItem[2]["validOptions"] == False:
@@ -110,6 +113,7 @@ def main():
         code = compile(pythonDynamicImportFile.read(), optionsScriptPath, "exec") # Finish here
         exec(code, execGlobals, execLocals)
       mainRender(menu, selection, 1)
+      hasIssuesChecked = False
     else:
       return True
 
@@ -117,7 +121,7 @@ def main():
     try:
       if len(selectedServices) > 0:
         global apiBuildOutput
-        apiBuildOutput = saveBuild(os.getenv('API_ADDR'), selectedServices, buildOptions["serviceConfigurations"])
+        apiBuildOutput = saveBuild(os.getenv('API_ADDR'), selectedServices, buildOptions["configurations"])
         return True
       else:
         print("No items selected")
@@ -200,17 +204,17 @@ def main():
           for i in range(optionsIssuesSpace):
             toPrint += " "
 
-          if "issues" in menuItem[2] and menuItem[2]["issues"] == True:
-            toPrint = toPrint + '{t.red_on_orange} !! {t.normal}'.format(t=term)
-            toPrint = toPrint + ' {t.orange_on_black}Issue {t.normal}'.format(t=term)
-          elif "issues" in menuItem[2] and menuItem[2]["issues"] == False:
-            toPrint = toPrint + '    {t.green_on_blue} Pass {t.normal} '.format(t=term)
-          else:
-            if menuItem[2]["checked"]:
-              toPrint = toPrint + ' {t.red_on_black} Unknown {t.normal} '.format(t=term)
+          if menuItem[2]["checked"]:
+            if "issues" in menuItem[2] and menuItem[2]["issues"] == True and hasIssuesChecked == True:
+              toPrint = toPrint + '{t.red_on_orange} !! {t.normal}'.format(t=term)
+              toPrint = toPrint + ' {t.orange_on_black}Issue {t.normal}'.format(t=term)
+            elif "issues" in menuItem[2] and menuItem[2]["issues"] == False and hasIssuesChecked == True:
+              toPrint = toPrint + '    {t.green_on_blue} Pass {t.normal} '.format(t=term)
             else:
-              for i in range(issuesLength):
-                toPrint += " "
+              toPrint = toPrint + ' {t.red_on_black} Unknown {t.normal} '.format(t=term)
+          else:
+            for i in range(issuesLength):
+              toPrint += " "
 
           for i in range(spaceAfterissues):
             toPrint += " "
@@ -317,7 +321,7 @@ def main():
         print(term.center(commonEmptyLine(renderMode)))
         print(term.center(commonBottomBorder(renderMode)))
 
-        if not apiCheckBuild == None and 'json' in apiCheckBuild and 'issueList' in apiCheckBuild['json']:
+        if apiCheckBuild != None and 'json' in apiCheckBuild and apiCheckBuild['json'] != None and 'issueList' in apiCheckBuild['json']:
           if 'services' in apiCheckBuild['json']['issueList']:
             if len(apiCheckBuild['json']['issueList']['services']) > 0:
               issuesList = apiCheckBuild['json']['issueList']
@@ -356,8 +360,12 @@ def main():
                 print(term.center("{bv} {nm} - {desc} {bv}".format(nm=formattedServiceNameAndConflictType, desc=issueDescription, bv=specialChars[renderMode]["borderVertical"]) ))
               print(term.center(commonEmptyLine(renderMode, size = 139)))
               print(term.center(commonBottomBorder(renderMode, size = 139)))
+        elif apiCheckBuild != None and (apiCheckBuild['json'] == None or apiCheckBuild['status'] == -1):
+          print("API failed. See API logs for details.")
+          print("Press [Esc] to go back")
 
-    except Exception as err: 
+
+    except Exception as err:
       print("There was an error rendering the menu:")
       print(err)
       print('Error reported:')
@@ -481,21 +489,21 @@ def main():
             if key.name == 'KEY_UP':
               selection -= 1
               needsRender = 2
-            if key.name == 'KEY_RIGHT': # TODO: Implement options
+            if key.name == 'KEY_RIGHT':
               executeServiceOptions()
             if key.name == 'KEY_ENTER':
-              if hasIssuesChecked == False:
-                checkForIssues()
-                updateMenuIssues(menu)
-                hasIssuesChecked = True
-                needsRender = 1
-              else:
-                buildResult = buildServices()
-                results["buildState"] = buildResult
-                if not buildResult == None:
-                  selectionInProgress = False
-                  return results["buildState"]
-                # input(apiBuildOutput) # TODO: Remove this
+              if len(selectedServices) > 0:
+                if hasIssuesChecked == False:
+                  checkForIssues()
+                  updateMenuIssues(menu)
+                  hasIssuesChecked = True
+                  needsRender = 1
+                else:
+                  buildResult = buildServices()
+                  results["buildState"] = buildResult
+                  if not buildResult == None:
+                    selectionInProgress = False
+                    return results["buildState"]
             if key.name == 'KEY_ESCAPE':
               results["buildState"] = False
               return results["buildState"]
