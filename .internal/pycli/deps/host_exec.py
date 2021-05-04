@@ -16,7 +16,7 @@ def getCommandString(command, iotstackPwd=iotstackPwd, hostUser=hostUser, hostAd
   )
 
 def execSilent(command):
-  execRes = subprocess.check_output(getCommandString(command), stderr=subprocess.PIPE, shell=True)
+  execRes = subprocess.check_output(getCommandString(command), stderr=subprocess.PIPE, shell=False)
   return execRes.decode('ascii').strip()
 
 def execInteractive(command):

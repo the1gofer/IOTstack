@@ -36,7 +36,7 @@ const deconz = () => {
   retr.getHelp = () => {
     return {
       serviceName, // Required
-      website: '', // Website of service
+      website: 'https://github.com/marthoc/docker-deconz', // Website of service
       rawMarkdownRemote: '', // Usually links to github raw help pages.
       rawMarkdownLocal: '', // Relative path to docs locally
       onlineRendered: '' // Usually links to the github page for this service.
@@ -53,7 +53,8 @@ const deconz = () => {
     return {
       serviceName, // Required
       displayName: 'Deconz',
-      serviceTypeTags: ['iot']
+      serviceTypeTags: ['iot'],
+      iconUri: '/logos/dashmachine.png'
     };
   };
 

@@ -189,7 +189,10 @@ else
     docker rmi $(docker images -q --format "{{.Repository}}:{{.Tag}}" | grep 'iostack_api') --force 2> /dev/null
     docker rmi $(docker images -q --format "{{.Repository}}:{{.Tag}}" | grep 'iostack_pycli') --force 2> /dev/null
 
+    echo ""
+    echo "Beginning menu build process now."
     sleep 1
+    echo ""
 
     # Build all asynchronously, so it's faster. Give PyCLI a slight headstart to keep the user waiting the shortest time.
     docker build --quiet -t iostack_pycli:$VERSION -f ./.internal/pycli.Dockerfile . > /dev/null &
@@ -202,7 +205,7 @@ else
     PYCLI_REBUILD_DONE="not completed"
     WUI_REBUILD_DONE="not completed"
 
-    until [[ $SLEEP_COUNTER -gt 601 || ("$API_REBUILD_DONE" == "completed" && "$PYCLI_REBUILD_DONE" == "completed" && "$WUI_REBUILD_DONE" == "completed") ]]; do
+    until [[ $SLEEP_COUNTER -gt 661 || ("$API_REBUILD_DONE" == "completed" && "$PYCLI_REBUILD_DONE" == "completed" && "$WUI_REBUILD_DONE" == "completed") ]]; do
       if [[ ! "$(docker images -q iostack_api:$VERSION)" == "" && ! $API_REBUILD_DONE == "completed" ]]; then
         API_REBUILD_DONE="completed"
         echo ""
@@ -237,10 +240,11 @@ else
     echo ""
   fi
 
-  if [[ $SLEEP_COUNTER -gt 600 ]]; then
+  if [[ $SLEEP_COUNTER -gt 660 ]]; then
     echo ""
     echo "Build timeout occured"
     echo "Something seems to have gone wrong when rebuilding the menu docker images."
+    echo "It's possible the container(s) just need a little more time to finish building."
     echo "API Rebuild: $API_REBUILD_DONE"
     echo "PyCLI Rebuild: $PYCLI_REBUILD_DONE"
     echo "WUI Rebuild: $WUI_REBUILD_DONE"

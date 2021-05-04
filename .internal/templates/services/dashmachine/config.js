@@ -35,7 +35,8 @@ const dashmachine = () => {
     return {
       serviceName, // Required
       displayName: 'DashMachine',
-      serviceTypeTags: ['wui', 'dashboard']
+      serviceTypeTags: ['wui', 'dashboard'],
+      iconUri: '/logos/dashmachine.png'
     };
   };
 

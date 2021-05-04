@@ -37,7 +37,8 @@ const blynk_server = () => {
     return {
       serviceName, // Required
       displayName: 'Blynk Server (untested)',
-      serviceTypeTags: ['wui', 'iot']
+      serviceTypeTags: ['wui', 'iot'],
+      iconUri: '/logos/blynk.png'
     };
   };
 
