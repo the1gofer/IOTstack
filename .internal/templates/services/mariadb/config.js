@@ -54,7 +54,8 @@ const mariadb = () => {
     return {
       serviceName, // Required
       displayName: 'MariaDB',
-      serviceTypeTags: ['database', 'sql']
+      serviceTypeTags: ['database', 'sql'],
+      iconUri: '/logos/mariadb.png'
     };
   };
 

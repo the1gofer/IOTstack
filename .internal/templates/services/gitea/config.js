@@ -35,7 +35,8 @@ const gitea = () => {
     return {
       serviceName, // Required
       displayName: 'Gitea',
-      serviceTypeTags: ['wui', 'git']
+      serviceTypeTags: ['wui', 'git'],
+      iconUri: '/logos/gitea.png'
     };
   };
 

@@ -36,7 +36,8 @@ const domoticz = () => {
     return {
       serviceName, // Required
       displayName: 'Domoticz',
-      serviceTypeTags: ['wui', 'dashboard', 'home automation', 'iot', 'z-wave']
+      serviceTypeTags: ['wui', 'dashboard', 'home automation', 'iot', 'z-wave'],
+      iconUri: '/logos/domoticz.png'
     };
   };
 

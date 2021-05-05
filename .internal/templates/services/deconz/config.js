@@ -54,7 +54,7 @@ const deconz = () => {
       serviceName, // Required
       displayName: 'Deconz',
       serviceTypeTags: ['iot'],
-      iconUri: '/logos/dashmachine.png'
+      iconUri: '/logos/deconz.png'
     };
   };
 

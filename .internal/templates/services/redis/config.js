@@ -1,16 +1,22 @@
-const espruinohub = () => {
+const pihole = () => {
   const retr = {};
 
-  const serviceName = 'espruinohub';
+  const serviceName = 'redis';
 
   retr.getConfigOptions = () => {
     return {
       serviceName, // Required
       labeledPorts: {
-        "1888:1888": 'http'
+        "6379:6379": 'tcp'
       },
-      volumes: false,
-      networks: false,
+      modifyableEnvironment: [
+        {
+          key: 'TZ',
+          value: 'Etc/UTC'
+        }
+      ],
+      volumes: true,
+      networks: true,
       logging: true
     }
   };
@@ -34,13 +40,12 @@ const espruinohub = () => {
   retr.getMeta = () => {
     return {
       serviceName, // Required
-      displayName: 'EspruinoHub',
-      serviceTypeTags: ['mqtt', 'ble', 'rpi only'],
-      iconUri: '/logos/espruinohub.png'
+      displayName: 'Redis (Untested)',
+      serviceTypeTags: ['database', 'cache']
     };
   };
 
   return retr;
 };
 
-module.exports = espruinohub;
+module.exports = pihole;

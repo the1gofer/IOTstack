@@ -35,7 +35,8 @@ const home_assistant = () => {
     return {
       serviceName, // Required
       displayName: 'Home Assistant (untested)',
-      serviceTypeTags: ['wui', 'dashboard', 'home automation', 'iot']
+      serviceTypeTags: ['wui', 'dashboard', 'home automation', 'iot'],
+      iconUri: '/logos/homeassistant.png'
     };
   };
 

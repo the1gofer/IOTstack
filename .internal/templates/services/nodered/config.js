@@ -45,7 +45,8 @@ const nodered = ({
     return {
       serviceName, // Required
       displayName: 'NodeRed',
-      serviceTypeTags: ['wui', 'dashboard', 'low code', 'graphs', 'aggregator', 'iot', 'server']
+      serviceTypeTags: ['wui', 'dashboard', 'low code', 'graphs', 'aggregator', 'iot', 'server'],
+      iconUri: '/logos/nodered.png'
     };
   };
 

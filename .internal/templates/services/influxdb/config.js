@@ -42,7 +42,8 @@ const influxDb = () => {
     return {
       serviceName, // Required
       displayName: 'InfluxDB',
-      serviceTypeTags: ['database', 'timeseries', 'sql']
+      serviceTypeTags: ['database', 'timeseries', 'sql'],
+      iconUri: '/logos/influxdb.svg'
     };
   };
 

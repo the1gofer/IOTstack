@@ -49,7 +49,8 @@ const diyhue = () => {
     return {
       serviceName, // Required
       displayName: 'diyhue',
-      serviceTypeTags: ['wui', 'iot']
+      serviceTypeTags: ['wui', 'iot'],
+      iconUri: '/logos/diyhue.png'
     };
   };
 
