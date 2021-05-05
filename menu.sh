@@ -245,10 +245,15 @@ else
     echo "Build timeout occured"
     echo "Something seems to have gone wrong when rebuilding the menu docker images."
     echo "It's possible the container(s) just need a little more time to finish building."
+    echo "You can try rerunning the menu after waiting a short time."
+    echo ""
     echo "API Rebuild: $API_REBUILD_DONE"
     echo "PyCLI Rebuild: $PYCLI_REBUILD_DONE"
     echo "WUI Rebuild: $WUI_REBUILD_DONE"
     echo ""
+    if [[ "$SKIPCHECKS" == "false" ]]; then
+      read -n 1 -s -r -p "Press any key to continue"
+    fi
   fi
 fi
 echo " Menu check completed."
