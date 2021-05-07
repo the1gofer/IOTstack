@@ -35,7 +35,8 @@ const mosquitto = () => {
     return {
       serviceName, // Required
       displayName: 'Mosquitto',
-      serviceTypeTags: ['mqtt', 'server']
+      serviceTypeTags: ['mqtt', 'server'],
+      iconUri: '/logos/mosquitto.png'
     };
   };
 

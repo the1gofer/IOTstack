@@ -1,13 +1,14 @@
-const pihole = () => {
+const deconz = () => {
   const retr = {};
 
-  const serviceName = 'pihole';
+  const serviceName = 'deconz';
 
   retr.getConfigOptions = () => {
     return {
       serviceName, // Required
       labeledPorts: {
-        "8089:80": 'http'
+        "9980:80": 'http',
+        "9981:8080": 'other'
       },
       modifyableEnvironment: [
         {
@@ -15,22 +16,19 @@ const pihole = () => {
           value: 'Etc/UTC'
         },
         {
-          key: 'WEBPASSWORD',
-          value: 'password'
+          key: 'ENABLE_MJPG_STREAMER',
+          value: ''
         },
         {
-          key: 'DNS1',
-          value: '8.8.8.8'
+          key: 'MJPG_STREAMER_INPUT',
+          value: ''
         },
         {
-          key: 'DNS2',
-          value: '8.8.4.4'
-        },
-        {
-          key: 'INTERFACE',
-          value: 'eth0'
+          key: 'CAMERA_DEV',
+          value: ''
         }
       ],
+      devices: true,
       volumes: true,
       networks: true,
       logging: true
@@ -56,13 +54,13 @@ const pihole = () => {
   retr.getMeta = () => {
     return {
       serviceName, // Required
-      displayName: 'PiHole',
-      serviceTypeTags: ['wui', 'dns', 'dashboard'],
-      iconUri: '/logos/pihole.png'
+      displayName: 'Octoprint (Untested)',
+      serviceTypeTags: ['3d printer'],
+      iconUri: '/logos/octoprint.png'
     };
   };
 
   return retr;
 };
 
-module.exports = pihole;
+module.exports = deconz;

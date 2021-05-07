@@ -50,7 +50,8 @@ const adminer = () => {
     return {
       serviceName, // Required
       displayName: 'Open Hab (untested)',
-      serviceTypeTags: ['wui', 'dashboard', 'home automation']
+      serviceTypeTags: ['wui', 'dashboard', 'home automation'],
+      iconUri: '/logos/openhab.png'
     };
   };
 

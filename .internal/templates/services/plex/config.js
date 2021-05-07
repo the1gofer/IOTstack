@@ -49,7 +49,8 @@ const plex = () => {
     return {
       serviceName, // Required
       displayName: 'Plex',
-      serviceTypeTags: ['wui', 'video', 'media']
+      serviceTypeTags: ['wui', 'video', 'media'],
+      iconUri: '/logos/plex.png'
     };
   };
 

@@ -7,30 +7,9 @@ const pihole = () => {
     return {
       serviceName, // Required
       labeledPorts: {
-        "8089:80": 'http'
+        "8089:8089": 'http',
+        "3001:3001": 'http-setup'
       },
-      modifyableEnvironment: [
-        {
-          key: 'TZ',
-          value: 'Etc/UTC'
-        },
-        {
-          key: 'WEBPASSWORD',
-          value: 'password'
-        },
-        {
-          key: 'DNS1',
-          value: '8.8.8.8'
-        },
-        {
-          key: 'DNS2',
-          value: '8.8.4.4'
-        },
-        {
-          key: 'INTERFACE',
-          value: 'eth0'
-        }
-      ],
       volumes: true,
       networks: true,
       logging: true
@@ -56,9 +35,9 @@ const pihole = () => {
   retr.getMeta = () => {
     return {
       serviceName, // Required
-      displayName: 'PiHole',
+      displayName: 'AdGuard (Untested)',
       serviceTypeTags: ['wui', 'dns', 'dashboard'],
-      iconUri: '/logos/pihole.png'
+      iconUri: '/logos/adguardhome.png'
     };
   };
 

@@ -18,7 +18,7 @@ const homer = () => {
   retr.getHelp = () => {
     return {
       serviceName, // Required
-      website: '', // Website of service
+      website: 'https://github.com/bastienwirtz/homer', // Website of service
       rawMarkdownRemote: '', // Usually links to github raw help pages.
       rawMarkdownLocal: '', // Relative path to docs locally
       onlineRendered: '' // Usually links to the github page for this service.
@@ -35,7 +35,8 @@ const homer = () => {
     return {
       serviceName, // Required
       displayName: 'Homer',
-      serviceTypeTags: ['wui', 'dashboard']
+      serviceTypeTags: ['wui', 'dashboard'],
+      iconUri: '/logos/homer.png'
     };
   };
 

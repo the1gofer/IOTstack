@@ -61,7 +61,8 @@ const nextcloud = () => {
     return {
       serviceName, // Required
       displayName: 'NextCloud',
-      serviceTypeTags: ['wui']
+      serviceTypeTags: ['wui'],
+      iconUri: '/logos/nextcloud.png'
     };
   };
 

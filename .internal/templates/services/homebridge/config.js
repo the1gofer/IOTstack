@@ -35,7 +35,8 @@ const homebridge = () => {
     return {
       serviceName, // Required
       displayName: 'Home Bridge',
-      serviceTypeTags: ['wui', 'iot']
+      serviceTypeTags: ['wui', 'iot'],
+      iconUri: '/logos/homebridge.png'
     };
   };
 

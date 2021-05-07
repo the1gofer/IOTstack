@@ -39,7 +39,8 @@ const motioneye = () => {
     return {
       serviceName, // Required
       displayName: 'Motion Eye',
-      serviceTypeTags: ['wui', 'physical security', 'video']
+      serviceTypeTags: ['wui', 'physical security', 'video'],
+      iconUri: '/logos/motioneye.png'
     };
   };
 
