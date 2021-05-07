@@ -41,7 +41,8 @@ const transmission = () => {
     return {
       serviceName, // Required
       displayName: 'Transmission',
-      serviceTypeTags: ['bittorrent', 'wui']
+      serviceTypeTags: ['bittorrent', 'wui'],
+      iconUri: '/logos/transmission.png'
     };
   };
 

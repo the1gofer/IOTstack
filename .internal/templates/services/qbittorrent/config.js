@@ -41,7 +41,8 @@ const qbittorrent = () => {
     return {
       serviceName, // Required
       displayName: 'Q Bittorrent',
-      serviceTypeTags: ['bittorrent', 'wui']
+      serviceTypeTags: ['bittorrent', 'wui'],
+      iconUri: '/logos/qbittorrent.svg'
     };
   };
 

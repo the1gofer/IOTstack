@@ -35,7 +35,8 @@ const tasmoadmin = () => {
     return {
       serviceName, // Required
       displayName: 'TasmoAdmin',
-      serviceTypeTags: ['wui', 'iot']
+      serviceTypeTags: ['wui', 'iot'],
+      iconUri: '/logos/tasmoadmin.png'
     };
   };
 

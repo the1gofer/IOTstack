@@ -46,7 +46,8 @@ const postgres = () => {
     return {
       serviceName, // Required
       displayName: 'Postgres',
-      serviceTypeTags: ['database']
+      serviceTypeTags: ['database'],
+      iconUri: '/logos/postgres.png'
     };
   };
 

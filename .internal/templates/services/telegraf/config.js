@@ -32,7 +32,8 @@ const telegraf = () => {
     return {
       serviceName, // Required
       displayName: 'Telegraf (untested)',
-      serviceTypeTags: ['iot']
+      serviceTypeTags: ['iot'],
+      iconUri: '/logos/telegraf.png'
     };
   };
 

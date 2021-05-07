@@ -36,7 +36,8 @@ const zigbee2mqtt = () => {
     return {
       serviceName, // Required
       displayName: 'zigbee2mqtt (untested)',
-      serviceTypeTags: ['zigbee', 'mqtt']
+      serviceTypeTags: ['zigbee', 'mqtt'],
+      iconUri: '/logos/zigbee2mqtt.png'
     };
   };
 

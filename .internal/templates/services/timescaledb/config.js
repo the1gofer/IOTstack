@@ -46,7 +46,8 @@ const timescaledb = () => {
     return {
       serviceName, // Required
       displayName: 'Timescale DB',
-      serviceTypeTags: ['timeseries', 'database']
+      serviceTypeTags: ['timeseries', 'database'],
+      iconUri: '/logos/timescaledb.png'
     };
   };
 

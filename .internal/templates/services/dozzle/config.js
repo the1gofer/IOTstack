@@ -35,7 +35,8 @@ const dozzle = () => {
     return {
       serviceName, // Required
       displayName: 'Dozzle',
-      serviceTypeTags: ['logs', 'docker', 'container manager', 'wui']
+      serviceTypeTags: ['logs', 'docker', 'container manager', 'wui'],
+      iconUri: '/logos/dozzle.svg'
     };
   };
 

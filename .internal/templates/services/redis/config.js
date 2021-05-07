@@ -41,7 +41,8 @@ const pihole = () => {
     return {
       serviceName, // Required
       displayName: 'Redis (Untested)',
-      serviceTypeTags: ['database', 'cache']
+      serviceTypeTags: ['database', 'cache'],
+      iconUri: '/logos/redis.png'
     };
   };
 

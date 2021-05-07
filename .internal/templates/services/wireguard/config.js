@@ -61,7 +61,8 @@ const wireguard = () => {
     return {
       serviceName, // Required
       displayName: 'Wire Guard (untested)',
-      serviceTypeTags: ['vpn']
+      serviceTypeTags: ['vpn'],
+      iconUri: '/logos/wireguard.png'
     };
   };
 

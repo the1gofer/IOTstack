@@ -11,8 +11,8 @@ octoprint:
     - "9980:80"
     - "9981:8080"
   devices:
-    - /dev/ttyAMA0:/dev/ttyACM0
-    - /dev/video0:/dev/video0
+    - "/dev/ttyACM0"
+    - "/dev/video0"
   volumes:
     - ./volumes/octoprint:/octoprint
   networks:

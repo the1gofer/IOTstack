@@ -35,7 +35,8 @@ const prometheus = () => {
     return {
       serviceName, // Required
       displayName: 'Prometheus (untested)',
-      serviceTypeTags: ['wui', 'database manager']
+      serviceTypeTags: ['wui', 'database manager'],
+      iconUri: '/logos/prometheus.svg'
     };
   };
 
