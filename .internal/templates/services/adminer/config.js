@@ -27,7 +27,7 @@ const adminer = () => {
       other: '', // Other links
       rawMarkdownRemote: '', // Usually links to github raw help pages.
       rawMarkdownLocal: '', // Relative path to docs locally
-      onlineRendered: '' // Usually links to the github page for this service.
+      onlineRendered: 'https://sensorsiot.github.io/IOTstack/Containers/Adminer/' // Usually links to the github page for this service.
     };
   };
 

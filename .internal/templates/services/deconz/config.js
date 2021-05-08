@@ -36,10 +36,16 @@ const deconz = () => {
   retr.getHelp = () => {
     return {
       serviceName, // Required
-      website: 'https://github.com/marthoc/docker-deconz', // Website of service
+      website: 'https://www.dresden-elektronik.com/wireless/software/deconz.html', // Website of service
+      serviceDocs: '', // Official link to docs of service
+      docker: 'https://hub.docker.com/r/marthoc/deconz', // Docker of service
+      source: 'https://github.com/marthoc/docker-deconz', // Sourcecode of service
+      community: '', // Community link
+      communityChat: '', // Discord, gitter etc
+      other: '', // Other links
       rawMarkdownRemote: '', // Usually links to github raw help pages.
       rawMarkdownLocal: '', // Relative path to docs locally
-      onlineRendered: '' // Usually links to the github page for this service.
+      onlineRendered: 'https://sensorsiot.github.io/IOTstack/Containers/Deconz/' // Usually links to the github page for this service.
     };
   };
 

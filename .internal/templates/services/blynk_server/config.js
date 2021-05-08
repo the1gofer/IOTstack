@@ -20,10 +20,16 @@ const blynk_server = () => {
   retr.getHelp = () => {
     return {
       serviceName, // Required
-      website: 'https://github.com/blynkkk/blynk-server', // Website of service
+      website: 'https://blynk.io/', // Website of service
+      serviceDocs: 'http://docs.blynk.cc/', // Official link to docs of service
+      docker: '', // Docker of service
+      source: 'https://github.com/blynkkk/blynk-server', // Sourcecode of service
+      community: 'https://community.blynk.cc/', // Community link
+      communityChat: '', // Discord, gitter etc
+      other: '', // Other links
       rawMarkdownRemote: '', // Usually links to github raw help pages.
       rawMarkdownLocal: '', // Relative path to docs locally
-      onlineRendered: '' // Usually links to the github page for this service.
+      onlineRendered: 'https://sensorsiot.github.io/IOTstack/Containers/Blynk_server/' // Usually links to the github page for this service.
     };
   };
 

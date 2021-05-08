@@ -50,7 +50,7 @@ const HelpAndDocsModal = (props) => {
   const [modalStyle] = React.useState(getModalStyle);
   const body = (
     <div style={modalStyle} className={classes.paper}>
-      <h2 id="simple-modal-title">{displayName} Help and Docs</h2>
+      <h2 id="simple-modal-title">{displayName} - ({serviceName}) Help and Docs</h2>
       <Grid
         container
         spacing={4}
@@ -66,7 +66,7 @@ const HelpAndDocsModal = (props) => {
               color="inherit"
             >
               <Box className={styles.docsInner}>
-                {serviceName} Website
+                {displayName} Website
               </Box>
             </Link>
           </Grid>
@@ -82,7 +82,7 @@ const HelpAndDocsModal = (props) => {
               color="inherit"
             >
               <Box className={styles.docsInner}>
-                {serviceName} Official Documentation
+                {displayName} Official Documentation
               </Box>
             </Link>
           </Grid>
@@ -98,7 +98,7 @@ const HelpAndDocsModal = (props) => {
               color="inherit"
             >
               <Box className={styles.docsInner}>
-                {serviceName} Docker
+                {displayName} Docker
               </Box>
             </Link>
           </Grid>
@@ -114,7 +114,7 @@ const HelpAndDocsModal = (props) => {
               color="inherit"
             >
               <Box className={styles.docsInner}>
-                {serviceName} Source Code
+                {displayName} Source Code
               </Box>
             </Link>
           </Grid>
@@ -130,7 +130,7 @@ const HelpAndDocsModal = (props) => {
               color="inherit"
             >
               <Box className={styles.docsInner}>
-                {serviceName} Community
+                {displayName} Community
               </Box>
             </Link>
         </Grid>
@@ -146,7 +146,7 @@ const HelpAndDocsModal = (props) => {
               color="inherit"
             >
               <Box className={styles.docsInner}>
-                {serviceName} Chat and Messaging
+                {displayName} Chat and Messaging
               </Box>
             </Link>
           </Grid>
@@ -162,7 +162,7 @@ const HelpAndDocsModal = (props) => {
               color="inherit"
             >
               <Box className={styles.docsInner}>
-                {serviceName} Other
+                {displayName} Other
               </Box>
             </Link>
           </Grid>
@@ -178,7 +178,7 @@ const HelpAndDocsModal = (props) => {
               color="inherit"
             >
               <Box className={styles.docsInner}>
-                IOTstack Documentation for {serviceName}
+                IOTstack Documentation for {displayName}
               </Box>
             </Link>
           </Grid>

@@ -19,9 +19,15 @@ const dashmachine = () => {
     return {
       serviceName, // Required
       website: '', // Website of service
+      serviceDocs: '', // Official link to docs of service
+      docker: 'https://hub.docker.com/r/rmountjoy/dashmachine', // Docker of service
+      source: 'https://github.com/rmountjoy92/DashMachine', // Sourcecode of service
+      community: '', // Community link
+      communityChat: '', // Discord, gitter etc
+      other: '', // Other links
       rawMarkdownRemote: '', // Usually links to github raw help pages.
       rawMarkdownLocal: '', // Relative path to docs locally
-      onlineRendered: '' // Usually links to the github page for this service.
+      onlineRendered: 'https://sensorsiot.github.io/IOTstack/Containers/DashMachine/' // Usually links to the github page for this service.
     };
   };
 
