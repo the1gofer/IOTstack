@@ -10,6 +10,7 @@ import configServiceMetadata from './getServiceMetadataReducer';
 import allServicesMetadataReducer from './getAllServicesMetadataReducer';
 import configServiceConfigOptions from './getServiceConfigOptionsReducer';
 import allServicesConfigOptionsReducer from './getAllServicesConfigOptionsReducer';
+import allServicesConfigHelpReducer from './getAllServicesConfigHelpReducer';
 import selectedServices from './updateSelectedServicesReducer';
 import hideServiceTags from './updateSelectedFilterTagsReducer';
 import buildIssues from './getBuildIssuesReducer';
@@ -32,6 +33,7 @@ export default configureStore({
     allServicesMetadataReducer: allServicesMetadataReducer,
     configServiceConfigOptions: configServiceConfigOptions,
     allServicesConfigOptionsReducer: allServicesConfigOptionsReducer,
+    allServicesConfigHelpReducer: allServicesConfigHelpReducer,
     selectedServices: selectedServices,
     buildHistory: buildHistory,
     hideServiceTags: hideServiceTags,

@@ -19,6 +19,12 @@ const adminer = () => {
     return {
       serviceName, // Required
       website: 'https://www.adminer.org/', // Website of service
+      serviceDocs: '', // Official link to docs of service
+      docker: 'https://hub.docker.com/_/adminer/', // Docker of service
+      source: 'https://github.com/vrana/adminer/', // Sourcecode of service
+      community: '', // Community link
+      communityChat: '', // Discord, gitter etc
+      other: '', // Other links
       rawMarkdownRemote: '', // Usually links to github raw help pages.
       rawMarkdownLocal: '', // Relative path to docs locally
       onlineRendered: '' // Usually links to the github page for this service.

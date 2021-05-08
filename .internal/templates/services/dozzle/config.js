@@ -19,6 +19,8 @@ const dozzle = () => {
     return {
       serviceName, // Required
       website: '', // Website of service
+      docker: '', // Docker of service
+      source: '', // Sourcecode of service
       rawMarkdownRemote: '', // Usually links to github raw help pages.
       rawMarkdownLocal: '', // Relative path to docs locally
       onlineRendered: '' // Usually links to the github page for this service.

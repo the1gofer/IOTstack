@@ -10,6 +10,7 @@ import Link from '@material-ui/core/Link';
 import ErrorOutlineOutlinedIcon from '@material-ui/icons/ErrorOutlineOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 import ServiceConfigModal from '../serviceConfigModal';
+import HelpAndDocsModal from '../helpAndDocsModal';
 import { useTheme } from '@material-ui/core/styles';
 import { API_STATUS } from '../../constants'
 import {
@@ -89,7 +90,8 @@ const ServiceItem = (props) => {
     setupTemporaryBuildOptions,
     saveTemporaryBuildOptions,
     allServicesMetadataReducer,
-    allServicesConfigOptionsReducer
+    allServicesConfigOptionsReducer,
+    allServicesConfigHelpReducer
   } = props;
 
   const [isLoading, setIsLoading] = useState(false);
@@ -176,6 +178,7 @@ const ServiceItem = (props) => {
   }
 
   const [modalOpen, setModalOpen] = useState(false);
+  const [modalhelpAndDocsOpen, setModalhelpAndDocsOpen] = useState(false);
 
   const serviceComponent = () => {
     return (
@@ -184,6 +187,15 @@ const ServiceItem = (props) => {
         m={1}
         justifyContent="center"
       >
+        <HelpAndDocsModal
+          isOpen={modalhelpAndDocsOpen}
+          serviceDocs={allServicesConfigHelpReducer?.payload?.[serviceName] ?? {}}
+          serviceName={serviceName}
+          displayName={serviceMetadata.displayName}
+          handleClose={() => {
+            setModalhelpAndDocsOpen(false);
+          }}
+        />
         <ServiceConfigModal
           isOpen={modalOpen}
           handleClose={() => {
@@ -253,15 +265,18 @@ const ServiceItem = (props) => {
           />
         </Box>
         <Box display="flex" m={1} justifyContent="center">
-          <Link
-            href="#"
-            rel="noopener"
-            target="_blank"
-            className={styles.docsLink}
-            color="inherit"
-          >
-            {serviceMetadata.displayName} Help and Docs
-          </Link>
+          {allServicesConfigHelpReducer.status === API_STATUS.SUCCESS && (
+            <Fragment>
+              <Button
+                variant="contained"
+                className={styles.docsLink}
+                onClick={() => { setModalhelpAndDocsOpen(true); }}
+                className={`${styles.configButton}`}
+              >
+                {serviceMetadata.displayName} Help and Docs
+              </Button>
+            </Fragment>
+          )}
         </Box>
       </Box>
     )

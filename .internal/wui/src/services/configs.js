@@ -108,9 +108,34 @@ const getAllServicesConfigOptions = (serviceName) => {
   });
 };
 
+const getAllServicesConfigHelp = (serviceName) => {
+  return new Promise((resolve, reject) => {
+    try {
+      return fetch(`${config.apiProtocol}${config.apiUrl}:${config.apiPort}/config/help`).then((response) => {
+        return response.json().then((data) => {
+          return resolve(data);
+        }).catch((err) => {
+          console.error('getAllServicesConfigHelp: error parsing JSON response:');
+          console.error(response);
+          return reject(JSON.stringify(err, Object.getOwnPropertyNames(err)));
+        });
+      }).catch((err) => {
+        console.error('getAllServicesConfigHelp: error communicating with API.');
+        console.error(err);
+        return reject(JSON.stringify(err, Object.getOwnPropertyNames(err)));
+      });
+    } catch (err) {
+      console.error('getAllServicesConfigHelp: an unhandled error occured');
+      console.error(err);
+      return reject(JSON.stringify(err, Object.getOwnPropertyNames(err)));
+    }
+  });
+};
+
 export {
   getServiceMetadata,
   getServiceConfigOptions,
   getAllServicesMetadata,
-  getAllServicesConfigOptions
+  getAllServicesConfigOptions,
+  getAllServicesConfigHelp
 };

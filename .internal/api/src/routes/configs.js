@@ -13,6 +13,10 @@ const registerConfigRoutes = ({ server, settings, version, logger } = {}) => {
     configView.getHelp(req, res, next);
   });
 
+  server.get('/config/help', (req, res, next) => {
+    configView.getAllHelp(req, res, next);
+  });
+
   server.get('/config/:serviceName/scripts', (req, res, next) => {
     configView.getScripts(req, res, next);
   });

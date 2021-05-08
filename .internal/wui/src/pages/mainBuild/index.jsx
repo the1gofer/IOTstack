@@ -9,6 +9,7 @@ import { getServiceTemplateListAction } from '../../actions/getServiceTemplateLi
 import { getServiceTemplatesAction } from '../../actions/getServiceTemplates.action';
 import { getNetworkTemplateListAction } from '../../actions/getNetworkTemplateList.action';
 import { getAllServicesConfigOptionsAction } from '../../actions/getAllServicesConfigOptions.action';
+import { getAllServicesConfigHelpAction } from '../../actions/getAllServicesConfigHelp.action';
 import { getAllServicesMetadataAction } from '../../actions/getAllServicesMetadata.action';
 import {
   getBuildOptions,
@@ -36,6 +37,7 @@ const mapDispatchToProps = (dispatch) => {
     dispatchGetAllServicesMetadata: () => dispatch(getAllServicesMetadataAction()),
     dispatchAddSelectedService: (serviceName) => dispatch(addSelectedService(serviceName)),
     dispatchGetAllServicesConfigOptions: () => dispatch(getAllServicesConfigOptionsAction()),
+    getAllServicesConfigHelpAction: () => dispatch(getAllServicesConfigHelpAction()),
     dispatchClearAllSelectedServices: () => dispatch(clearAllSelectedServicesAction())
   };
 };
@@ -46,6 +48,7 @@ const mapStateToProps = (selector) => {
     networkTemplateList: selector(state => state.networkTemplateList),
     serviceTemplates: selector(state => state.serviceTemplates),
     allServicesConfigOptionsReducer: selector(state => state.allServicesConfigOptionsReducer),
+    allServicesConfigHelpReducer: selector(state => state.allServicesConfigHelpReducer),
     selectedServices: selector(state => state.selectedServices),
     allServicesMetadataReducer: selector(state => state.allServicesMetadataReducer)
   };
@@ -66,7 +69,9 @@ const Main = (props) => {
     dispatchGetServiceTemplates,
     dispatchGetAllServicesMetadata,
     dispatchGetAllServicesConfigOptions,
+    getAllServicesConfigHelpAction,
     allServicesConfigOptionsReducer,
+    allServicesConfigHelpReducer,
     allServicesMetadataReducer,
     serviceTemplateList,
     networkTemplateList,
@@ -82,6 +87,7 @@ const Main = (props) => {
     dispatchGetServiceTemplates();
     dispatchGetAllServicesMetadata();
     dispatchGetAllServicesConfigOptions();
+    getAllServicesConfigHelpAction();
 
     dispatchClearAllSelectedServices();
   }, []);
@@ -127,6 +133,7 @@ const Main = (props) => {
                       saveTemporaryBuildOptions={saveTemporaryBuildOptions}
                       networkTemplateList={networkTemplateList}
                       serviceTemplates={serviceTemplates?.payload ?? {}}
+                      allServicesConfigHelpReducer={allServicesConfigHelpReducer}
                     />
                   </Grid>
                 );

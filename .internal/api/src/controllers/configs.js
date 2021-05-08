@@ -98,7 +98,7 @@ const ConfigsController = ({ server, settings, version, logger }) => {
         const servicesBuildPath = path.join(localTemplatesPath, localServicesRelativePath);
         serviceBuildScript = path.join(servicesBuildPath, serviceName, configLogicFile);
 
-        const configLogic = require(serviceBuildScript)({
+        const configHelp = require(serviceBuildScript)({
           settings,
           version,
           logger,
@@ -107,7 +107,7 @@ const ConfigsController = ({ server, settings, version, logger }) => {
           serviceName
         });
 
-        return resolve(configLogic.getHelp());
+        return resolve(configHelp.getHelp());
       } catch (err) {
         console.log(err);
         console.trace();
@@ -116,6 +116,49 @@ const ConfigsController = ({ server, settings, version, logger }) => {
         console.debug({ serviceBuildScript });
         return reject({
           component: 'ConfigsController::getHelp',
+          message: 'Unhandled error occured',
+          error: JSON.parse(JSON.stringify(err, Object.getOwnPropertyNames(err)))
+        });
+      }
+    });
+  };
+
+  retr.getAllHelp = async () => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const {
+          localTemplatesPath,
+          localServicesRelativePath,
+          configLogicFile
+        } = settings.paths;
+        const servicesMetadata = {};
+        const serviceTemplatesList = getDirectoryList(path.join(localTemplatesPath, localServicesRelativePath));
+
+        serviceTemplatesList.forEach((serviceName) => {
+          const servicesBuildPath = path.join(localTemplatesPath, localServicesRelativePath);
+          const serviceBuildScript = path.join(servicesBuildPath, serviceName, configLogicFile);
+
+          const configHelp = require(serviceBuildScript)({
+            settings,
+            version,
+            logger,
+            servicesBuildPath,
+            serviceBuildScript,
+            serviceName
+          });
+
+          servicesMetadata[serviceName] = configHelp.getHelp();
+        });
+
+        return resolve(servicesMetadata);
+      } catch (err) {
+        console.log(err);
+        console.trace();
+        console.debug("\nParams:");
+        console.debug({ serviceName });
+        console.debug({ serviceBuildScript });
+        return reject({
+          component: 'ConfigsController::getAllHelp',
           message: 'Unhandled error occured',
           error: JSON.parse(JSON.stringify(err, Object.getOwnPropertyNames(err)))
         });
