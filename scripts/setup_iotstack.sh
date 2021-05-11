@@ -84,45 +84,45 @@ function user_in_group()
 
 function install_docker() {
   if command_exists docker; then
-    echo "Docker already installed" >&2
+    echo "Docker already installed" >&1
   else
-    echo "Install Docker" >&2
+    echo "Install Docker" >&1
     curl -fsSL https://get.docker.com | sh
     sudo -E usermod -aG docker $USER
   fi
 
   if command_exists docker-compose; then
-    echo "docker-compose already installed" >&2
+    echo "docker-compose already installed" >&1
   else
-    echo "Install docker-compose" >&2
+    echo "Install docker-compose" >&1
     sudo -E apt install -y docker-compose
   fi
 
-  echo "" >&2
-  echo "You should now restart your system" >&2
+  echo "" >&1
+  echo "You should now restart your system" >&1
 }
 
 function docker_check() {
   DOCKER_GOOD="fail"
 
   if command_exists docker; then
-    echo "Docker is installed" >&2
+    echo "Docker is installed" >&1
     DOCKER_VERSION=$(docker version -f "{{.Server.Version}}" 2>&1)
 
     if [[ "$DOCKER_VERSION" == *"Cannot connect to the Docker daemon"* ]]; then
-      echo "Error getting docker version. Error when connecting to docker daemon. Check that docker is running." >&2
-      if (whiptail --title "Docker and Docker-Compose" --yesno "Error getting docker version. Error when connecting to docker daemon. Check that docker is running.\n\nCommand: docker version -f \"{{.Server.Version}}\"\n\nExit?" 20 78 >&2); then
+      echo "Error getting docker version. Error when connecting to docker daemon. Check that docker is running." >&1
+      if (whiptail --title "Docker and Docker-Compose" --yesno "Error getting docker version. Error when connecting to docker daemon. Check that docker is running.\n\nCommand: docker version -f \"{{.Server.Version}}\"\n\nExit?" 20 78 >&1); then
         exit 1
       fi
     elif [[ "$DOCKER_VERSION" == *" permission denied"* ]]; then
-      echo "Error getting docker version. Received permission denied error. Try running with: ./menu.sh --run-env-setup" >&2
-      if (whiptail --title "Docker and Docker-Compose" --yesno "Error getting docker version. Received permission denied error.\n\nTry rerunning the menu with: ./menu.sh --run-env-setup\n\nExit?" 20 78 >&2); then
+      echo "Error getting docker version. Received permission denied error. Try running with: ./menu.sh --run-env-setup" >&1
+      if (whiptail --title "Docker and Docker-Compose" --yesno "Error getting docker version. Received permission denied error.\n\nTry rerunning the menu with: ./menu.sh --run-env-setup\n\nExit?" 20 78 >&1); then
         exit 1
       fi
     fi
 
     if [[ -z "$DOCKER_VERSION" ]]; then
-      echo "Error getting docker version. Error when running docker command. Check that docker is installed correctly." >&2
+      echo "Error getting docker version. Error when running docker command. Check that docker is installed correctly." >&1
     fi
     
     DOCKER_VERSION_MAJOR=$(echo "$DOCKER_VERSION"| cut -d'.' -f 1)
@@ -134,11 +134,11 @@ function docker_check() {
     if [[ "$(minimum_version_check $REQ_DOCKER_VERSION $DOCKER_VERSION_MAJOR $DOCKER_VERSION_MINOR $DOCKER_VERSION_BUILD )" == "true" ]]; then
       [ -f .ignore_docker_outofdate ] && rm .ignore_docker_outofdate
       DOCKER_GOOD="true"
-      echo "Docker version $DOCKER_VERSION >= $REQ_DOCKER_VERSION. Docker is good to go." >&2
+      echo "Docker version $DOCKER_VERSION >= $REQ_DOCKER_VERSION. Docker is good to go." >&1
     else
       DOCKER_GOOD="outdated"
       if [ ! -f .ignore_docker_outofdate ]; then
-        if (whiptail --title "Docker and Docker-Compose Version Issue" --yesno "Docker version is currently $DOCKER_VERSION which is less than $REQ_DOCKER_VERSION consider upgrading or you may experience issues. You will not be prompted again. You can manually upgrade by typing:\n  sudo apt upgrade docker docker-compose\n\nAttempt to upgrade now?" 20 78 >&2); then
+        if (whiptail --title "Docker and Docker-Compose Version Issue" --yesno "Docker version is currently $DOCKER_VERSION which is less than $REQ_DOCKER_VERSION consider upgrading or you may experience issues. You will not be prompted again. You can manually upgrade by typing:\n  sudo apt upgrade docker docker-compose\n\nAttempt to upgrade now?" 20 78 >&1); then
           update_docker
         else
           touch .ignore_docker_outofdate
@@ -149,41 +149,41 @@ function docker_check() {
 
   if command_exists docker-compose; then
     COMPOSE_GOOD="pass"
-    echo "docker-compose is installed" >&2
+    echo "docker-compose is installed" >&1
   fi
 
   echo $DOCKER_GOOD
 }
 
 function group_setup() {
-  echo "Setting up groups:"
+  echo "Setting up groups:"  >&1
   if [[ ! "$(user_in_group bluetooth)" == "notgroup" ]] && [[ ! "$(user_in_group bluetooth)" == "true" ]]; then
-    echo "User is NOT in 'bluetooth' group. Adding:" >&2
-    echo "sudo usermod -G bluetooth -a $USER" >&2
+    echo "User is NOT in 'bluetooth' group. Adding:" >&1
+    echo "sudo usermod -G bluetooth -a $USER" >&1
     sudo -E usermod -G "bluetooth" -a $USER
   fi
 
   if [ ! "$(user_in_group docker)" == "true" ]; then
-    echo "User is NOT in 'docker' group. Adding:" >&2
-    echo "sudo usermod -G docker -a $USER" >&2
+    echo "User is NOT in 'docker' group. Adding:" >&1
+    echo "sudo usermod -G docker -a $USER" >&1
     sudo -E usermod -G "docker" -a $USER
   fi
 
-  echo "" >&2
-  echo "Rebooting or logging off is advised." >&2
+  echo "" >&1
+  echo "Rebooting or logging off is advised." >&1
 }
 
 function group_check() {
-  echo "Setting up groups:"
+  echo "Setting up groups:" >&1
   NEED_GROUP_SETUP="false"
   if [[ ! "$(user_in_group bluetooth)" == "notgroup" ]] && [[ ! "$(user_in_group bluetooth)" == "true" ]]; then
     NEED_GROUP_SETUP="fail"
-    echo "User is NOT in 'bluetooth' group." >&2
+    echo "User is NOT in 'bluetooth' group." >&1
   fi
 
   if [ ! "$(user_in_group docker)" == "true" ]; then
     NEED_GROUP_SETUP="fail"
-    echo "User is NOT in 'docker' group." >&2
+    echo "User is NOT in 'docker' group." >&1
   fi
   
   echo $NEED_GROUP_SETUP
@@ -202,14 +202,14 @@ function install_ssh_keys() {
   if [ -f "$CONTAINER_KEYS_FILE" ]; then
     NEW_KEY="$(cat $CONTAINER_KEYS_FILE.pub)"
     if grep -Fxq "$NEW_KEY" $AUTH_KEYS_FILE ; then
-      echo "Key already exists in '$AUTH_KEYS_FILE' Skipping..." >&2
+      echo "Key already exists in '$AUTH_KEYS_FILE' Skipping..." >&1
     else
       echo "$NEW_KEY" >> $AUTH_KEYS_FILE
-      echo "'$NEW_KEY' >> $AUTH_KEYS_FILE" >&2
-      echo "Key added." >&2
+      echo "'$NEW_KEY' >> $AUTH_KEYS_FILE" >&1
+      echo "Key added." >&1
     fi
   else
-    echo "Something went wrong. Couldn't access container keys file '$CONTAINER_KEYS_FILE'" >&2
+    echo "Something went wrong. Couldn't access container keys file '$CONTAINER_KEYS_FILE'" >&1
   fi
 }
 
@@ -238,9 +238,9 @@ function do_iotstack_setup() {
   cd IOTstack
 
   if [ $? -eq 0 ]; then
-    echo "IOTstack cloned"
+    echo "IOTstack cloned" >&1
   else
-    echo "Could not find IOTstack directory"
+    echo "Could not find IOTstack directory" >&1
     exit 5
   fi
 }

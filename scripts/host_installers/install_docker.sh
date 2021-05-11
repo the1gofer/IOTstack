@@ -16,19 +16,19 @@ function command_exists() {
 if [ "$1" == "install" ]; then
   RESTART_REQUIRED="false"
   if command_exists docker; then
-    echo "Docker already installed" >&2
+    echo "Docker already installed" >&1
   else
-    echo "Install Docker" >&2
+    echo "Install Docker" >&1
     curl -fsSL https://get.docker.com | sh
     RESTART_REQUIRED="true"
     sudo usermod -aG docker $USER
   fi
 
   if command_exists docker-compose; then
-    echo "docker-compose already installed" >&2
+    echo "docker-compose already installed" >&1
   else
     RESTART_REQUIRED="true"
-    echo "Install docker-compose" >&2
+    echo "Install docker-compose" >&1
     sudo apt install -y docker-compose
     sudo usermod -aG docker $USER
   fi

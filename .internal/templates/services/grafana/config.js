@@ -28,10 +28,17 @@ const grafana = () => {
   retr.getHelp = () => {
     return {
       serviceName, // Required
-      website: 'https://grafana.com/', // Website of service
-      rawMarkdownRemote: '', // Usually links to github raw help pages.
-      rawMarkdownLocal: '', // Relative path to docs locally
-      onlineRendered: '' // Usually links to the github page for this service.
+      links: {
+        "Website": 'https://grafana.com/', // Website of service
+        "Docker": 'https://hub.docker.com/r/grafana/grafana', // Docker of service
+        "Source Code": 'https://github.com/grafana/grafana', // Sourcecode of service
+        "Community": 'https://community.grafana.com/', // Community link
+        "Tutorials": 'https://grafana.com/tutorials/', // Discord, gitter etc
+        other: '', // Other links
+        rawMarkdownRemote: '', // Usually links to github raw help pages.
+        rawMarkdownLocal: '', // Relative path to docs locally
+        "IOTstack Documentation for {$displayName}": 'https://sensorsiot.github.io/IOTstack/Containers/Grafana/' // Usually links to the github page for this service.
+      }
     };
   };
 

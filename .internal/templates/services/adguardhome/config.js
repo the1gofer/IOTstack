@@ -19,16 +19,16 @@ const pihole = () => {
   retr.getHelp = () => {
     return {
       serviceName, // Required
-      website: '', // Website of service
-      serviceDocs: 'https://github.com/AdguardTeam/AdGuardHome/wiki', // Official link to docs of service
-      docker: 'https://hub.docker.com/r/adguard/adguardhome', // Docker of service
-      source: 'https://github.com/AdguardTeam/AdGuardHome', // Sourcecode of service
-      community: '', // Community link
-      communityChat: '', // Discord, gitter etc
-      other: '', // Other links
-      rawMarkdownRemote: '', // Usually links to github raw help pages.
-      rawMarkdownLocal: '', // Relative path to docs locally
-      onlineRendered: 'https://sensorsiot.github.io/IOTstack/Containers/AdGuardHome/' // Usually links to the github page for this service.
+      links: {
+        "Docker": 'https://hub.docker.com/r/adguard/adguardhome', // Docker of service
+        "Source Code": 'https://github.com/AdguardTeam/AdGuardHome', // Sourcecode of service
+        community: '', // Community link
+        communityChat: '', // Discord, gitter etc
+        other: '', // Other links
+        rawMarkdownRemote: '', // Usually links to github raw help pages.
+        rawMarkdownLocal: '', // Relative path to docs locally
+        "IOTstack Documentation for {$displayName}": 'https://sensorsiot.github.io/IOTstack/Containers/AdGuardHome/' // Usually links to the github page for this service.
+      }
     };
   };
 

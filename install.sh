@@ -114,26 +114,26 @@ function install_docker() {
   echo ""
   DOCKERREBOOT="false"
   if command_exists docker; then
-    echo "Docker already installed" >&2
+    echo "Docker already installed" >&1
   else
-    echo "Install Docker" >&2
+    echo "Install Docker" >&1
     curl -fsSL https://get.docker.com | sh
     sudo -E usermod -aG docker $USER
     DOCKERREBOOT="true"
   fi
 
   if command_exists docker-compose; then
-    echo "docker-compose already installed" >&2
+    echo "docker-compose already installed" >&1
   else
-    echo "Install docker-compose" >&2
+    echo "Install docker-compose" >&1
     sudo -E apt install -y docker-compose
     DOCKERREBOOT="true"
   fi
 
   if [[ "$DOCKERREBOOT" == "true" ]]; then
     REBOOT_REQ="true"
-    echo "" >&2
-    echo "You should restart your system after IOTstack is installed" >&2
+    echo "" >&1
+    echo "You should restart your system after IOTstack is installed" >&1
   fi
 }
 
@@ -160,24 +160,24 @@ function check_host_ssh_keys() {
 function check_ssh_state() {
   echo ""
   echo "check_ssh_state"
-  printf "Checking Container keys...  " >&2
+  printf "Checking Container keys...  " >&1
   if [[ "$(check_container_ssh)" == "false" ]]; then
     HAS_ERROR="true"
-    echo " --- Something went wrong with SSH key installation --- " >&2
-    echo "SSH keys for containers do not exist. the menu containers will not be able to execute commands on your host." >&2
-    echo "To regenerate these keys, run:" >&2
-    echo "  bash ./menu.sh --run-env-setup" >&2
+    echo " --- Something went wrong with SSH key installation --- " >&1
+    echo "SSH keys for containers do not exist. the menu containers will not be able to execute commands on your host." >&1
+    echo "To regenerate these keys, run:" >&1
+    echo "  bash ./menu.sh --run-env-setup" >&1
   else
-    echo "Keys file found." >&2
-      printf "Checking Host Authorised keys...  " >&2
+    echo "Keys file found." >&1
+      printf "Checking Host Authorised keys...  " >&1
       if [[ "$(check_host_ssh_keys)" == "false" ]]; then
         HAS_ERROR="true"
-        echo " --- Something went wrong with SSH key installation --- " >&2
-        echo "SSH key for menu containers not found in authorized_keys file" >&2
-        echo "To regenerate and install keys, run:" >&2
-        echo "  bash ./menu.sh --run-env-setup" >&2
+        echo " --- Something went wrong with SSH key installation --- " >&1
+        echo "SSH key for menu containers not found in authorized_keys file" >&1
+        echo "To regenerate and install keys, run:" >&1
+        echo "  bash ./menu.sh --run-env-setup" >&1
       else
-        echo "Key found in authorized_keys file." >&2
+        echo "Key found in authorized_keys file." >&1
       fi
   fi
 }
@@ -187,27 +187,27 @@ function do_group_setup() {
   echo "do_group_setup"
   GROUPCHANGE="false"
   if [[ ! "$(user_in_group bluetooth)" == "notgroup" ]] && [[ ! "$(user_in_group bluetooth)" == "true" ]]; then
-    echo "User is NOT in 'bluetooth' group. Adding:" >&2
-    echo "sudo usermod -G bluetooth -a $USER" >&2
+    echo "User is NOT in 'bluetooth' group. Adding:" >&1
+    echo "sudo usermod -G bluetooth -a $USER" >&1
     sudo -E usermod -G "bluetooth" -a $USER
     GROUPCHANGE="true"
   else
-    echo "User already in bluetooth group" >&2
+    echo "User already in bluetooth group" >&1
   fi
 
   if [ ! "$(user_in_group docker)" == "true" ]; then
-    echo "User is NOT in 'docker' group. Adding:" >&2
-    echo "sudo usermod -G docker -a $USER" >&2
+    echo "User is NOT in 'docker' group. Adding:" >&1
+    echo "sudo usermod -G docker -a $USER" >&1
     sudo -E usermod -G "docker" -a $USER
     GROUPCHANGE="true"
   else
-    echo "User already in docker group" >&2
+    echo "User already in docker group" >&1
   fi
 
   if [[ "$GROUPCHANGE" == "true" ]]; then
     REBOOT_REQ="true"
-    echo "" >&2
-    echo "Rebooting or logging off is advised." >&2
+    echo "" >&1
+    echo "Rebooting or logging off is advised." >&1
   fi
 }
 
@@ -215,12 +215,12 @@ function do_env_setup() {
   echo ""
   echo "do_env_setup"
   sudo -E apt update
-  echo "Installing dependencies: git, wget, unzip, jq, netcat, screen" >&2
+  echo "Installing dependencies: git, wget, unzip, jq, netcat, screen" >&1
   sudo -E apt install git wget unzip jq netcat screen -y
   if [ ! $? -eq 0 ]; then
     HAS_ERROR="true"
-    echo "" >&2
-    echo "Dependency install failed. Aborting installation" >&2
+    echo "" >&1
+    echo "Dependency install failed. Aborting installation" >&1
     exit 1
   fi
 }
@@ -229,30 +229,30 @@ function do_iotstack_setup() {
   echo ""
   echo "do_iotstack_setup"
   if [ -f "./menu.sh" ]; then
-    echo "'./menu.sh' file detected, will not reclone." >&2
+    echo "'./menu.sh' file detected, will not reclone." >&1
   else
-    echo "IOTstack will be cloned into $(pwd)/IOTstack" >&2
+    echo "IOTstack will be cloned into $(pwd)/IOTstack" >&1
     git clone https://github.com/SensorsIot/IOTstack.git
 
     if [[ $? -eq 0 ]]; then
-      echo "IOTstack cloned" >&2
+      echo "IOTstack cloned" >&1
     else
-      echo "Error cloning IOTstack" >&2
+      echo "Error cloning IOTstack" >&1
     fi
 
     cd IOTstack
     IOTCDRS=$?
-    echo "Current Dir: $(pwd)" >&2
+    echo "Current Dir: $(pwd)" >&1
     if [[ $IOTCDRS -eq 0 ]]; then
-      echo "IOTstack directory found" >&2
+      echo "IOTstack directory found" >&1
     else
       HAS_ERROR="true"
-      echo "Could not find IOTstack directory" >&2
+      echo "Could not find IOTstack directory" >&1
       exit 5
     fi
 
     if [[ -n "$IOTSTACK_INSTALL_BRANCH" ]]; then
-      echo "Attempting to switch to install branch: '$IOTSTACK_INSTALL_BRANCH'" >&2
+      echo "Attempting to switch to install branch: '$IOTSTACK_INSTALL_BRANCH'" >&1
       git checkout $IOTSTACK_INSTALL_BRANCH
     fi
   fi
@@ -269,11 +269,11 @@ function install_ssh_keys() {
   if [ -f "$CONTAINER_KEYS_FILE" ]; then
     NEW_KEY="$(cat $CONTAINER_KEYS_FILE.pub)"
     if grep -Fxq "$NEW_KEY" $AUTH_KEYS_FILE ; then
-      echo "Key already exists in '$AUTH_KEYS_FILE' Skipping..." >&2
+      echo "Key already exists in '$AUTH_KEYS_FILE' Skipping..." >&1
     else
       echo "$NEW_KEY" >> $AUTH_KEYS_FILE
-      echo "cat $CONTAINER_KEYS_FILE.pub >> $AUTH_KEYS_FILE" >&2
-      echo "Key added." >&2
+      echo "cat $CONTAINER_KEYS_FILE.pub >> $AUTH_KEYS_FILE" >&1
+      echo "Key added." >&1
     fi
   fi
 }
@@ -284,20 +284,20 @@ function ssh_management() {
     install_ssh_keys
     check_ssh_state
   elif [[ "$SSH_KEY_INSTALL" == "false" ]]; then
-    echo "Skipping container SSH key install" >&2
+    echo "Skipping container SSH key install" >&1
   else
-    echo "IOTstack runs its menu and API inside docker containers. In order for these containers to be able to execute commands on your host, SSH keys are required to be generated and installed." >&2
-    echo "These keys never leave your host and are only consumed by the menu containers. You can set these up yourself later, either manually or by running ./menu.sh --run-env-setup" >&2
-    echo "See the documentation in the github for more information." >&2
-    echo "In the future, setting the environment variable 'SSH_KEY_INSTALL' to 'true' or 'false' will skip this prompt" >&2
-    echo "" >&2
-    read -p "Generate and Install the SSH keys? [y/n]\n" -n 1 -r >&2
+    echo "IOTstack runs its menu and API inside docker containers. In order for these containers to be able to execute commands on your host, SSH keys are required to be generated and installed." >&1
+    echo "These keys never leave your host and are only consumed by the menu containers. You can set these up yourself later, either manually or by running ./menu.sh --run-env-setup" >&1
+    echo "See the documentation in the github for more information." >&1
+    echo "In the future, setting the environment variable 'SSH_KEY_INSTALL' to 'true' or 'false' will skip this prompt" >&1
+    echo "" >&1
+    read -p "Generate and Install the SSH keys? [y/n]\n" -n 1 -r >&1
     if [[ $REPLY =~ ^[Yy]$ ]]; then
       generate_container_ssh
       install_ssh_keys
       check_ssh_state
     else
-      echo "Skipping container SSH key install" >&2
+      echo "Skipping container SSH key install" >&1
     fi
   fi
 }

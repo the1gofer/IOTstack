@@ -19,11 +19,15 @@ const dozzle = () => {
     return {
       serviceName, // Required
       website: '', // Website of service
-      docker: '', // Docker of service
-      source: '', // Sourcecode of service
+      serviceDocs: '', // Official link to docs of service
+      docker: 'https://hub.docker.com/u/amir20', // Docker of service
+      source: 'https://github.com/amir20/dozzle', // Sourcecode of service
+      community: '', // Community link
+      communityChat: '', // Discord, gitter etc
+      other: '', // Other links
       rawMarkdownRemote: '', // Usually links to github raw help pages.
       rawMarkdownLocal: '', // Relative path to docs locally
-      onlineRendered: '' // Usually links to the github page for this service.
+      onlineRendered: 'https://sensorsiot.github.io/IOTstack/Containers/Dozzle/' // Usually links to the github page for this service.
     };
   };
 

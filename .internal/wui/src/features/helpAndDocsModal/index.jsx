@@ -7,6 +7,8 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 
+import { byName } from '../../utils/interpolate';
+
 import styles from './help-and-docs.module.css';
 
 const getModalStyle = () => {
@@ -55,134 +57,26 @@ const HelpAndDocsModal = (props) => {
         container
         spacing={4}
       >
-        {serviceDocs.website && (
-          <Grid item display="flex" xs={7} md={5}>
-            <Link
-              href="#"
-              rel="noopener"
-              target="_blank"
-              component="button"
-              className={styles.docsLink}
-              color="inherit"
-            >
-              <Box className={styles.docsInner}>
-                {displayName} Website
-              </Box>
-            </Link>
-          </Grid>
-        )}
-        {serviceDocs.serviceDocs && (
-          <Grid item display="flex" xs={7} md={5}>
-            <Link
-              href="#"
-              rel="noopener"
-              target="_blank"
-              component="button"
-              className={styles.docsLink}
-              color="inherit"
-            >
-              <Box className={styles.docsInner}>
-                {displayName} Official Documentation
-              </Box>
-            </Link>
-          </Grid>
-        )}
-        {serviceDocs.docker && (
-          <Grid item display="flex" xs={7} md={5}>
-            <Link
-              href="#"
-              rel="noopener"
-              target="_blank"
-              component="button"
-              className={styles.docsLink}
-              color="inherit"
-            >
-              <Box className={styles.docsInner}>
-                {displayName} Docker
-              </Box>
-            </Link>
-          </Grid>
-        )}
-        {serviceDocs.source && (
-          <Grid item display="flex" xs={7} md={5}>
-            <Link
-              href="#"
-              rel="noopener"
-              target="_blank"
-              component="button"
-              className={styles.docsLink}
-              color="inherit"
-            >
-              <Box className={styles.docsInner}>
-                {displayName} Source Code
-              </Box>
-            </Link>
-          </Grid>
-        )}
-        {serviceDocs.community && (
-          <Grid item display="flex" xs={7} md={5}>
-            <Link
-              href="#"
-              rel="noopener"
-              target="_blank"
-              component="button"
-              className={styles.docsLink}
-              color="inherit"
-            >
-              <Box className={styles.docsInner}>
-                {displayName} Community
-              </Box>
-            </Link>
-        </Grid>
-        )}
-        {serviceDocs.communityChat && (
-          <Grid item display="flex" xs={7} md={5}>
-            <Link
-              href="#"
-              rel="noopener"
-              target="_blank"
-              component="button"
-              className={styles.docsLink}
-              color="inherit"
-            >
-              <Box className={styles.docsInner}>
-                {displayName} Chat and Messaging
-              </Box>
-            </Link>
-          </Grid>
-        )}
-        {serviceDocs.other && (
-          <Grid item display="flex" xs={7} md={5}>
-            <Link
-              href="#"
-              rel="noopener"
-              target="_blank"
-              component="button"
-              className={styles.docsLink}
-              color="inherit"
-            >
-              <Box className={styles.docsInner}>
-                {displayName} Other
-              </Box>
-            </Link>
-          </Grid>
-        )}
-        {serviceDocs.onlineRendered && (
-          <Grid item display="flex" xs={7} md={5}>
-            <Link
-              href="#"
-              rel="noopener"
-              target="_blank"
-              component="button"
-              className={styles.docsLink}
-              color="inherit"
-            >
-              <Box className={styles.docsInner}>
-                IOTstack Documentation for {displayName}
-              </Box>
-            </Link>
-          </Grid>
-        )}
+        {serviceDocs
+        && typeof serviceDocs === 'object'
+        && Object.keys(serviceDocs?.links ?? []).map((key, i) => {
+          if (serviceDocs?.links[key]) {
+            return (
+              <Grid item display="flex" xs={7} md={5}>
+                <Link
+                  href={serviceDocs?.links?.[key]}
+                  rel="noopener"
+                  target="_blank"
+                  className={styles.docsLink}
+                >
+                  <Box className={styles.docsInner}>
+                    {byName(key, { displayName, serviceName })}
+                  </Box>
+                </Link>
+              </Grid>
+            )
+          }
+        })}
       </Grid>
 
       <Box pt={6}>

@@ -39,11 +39,11 @@ function update_project() {
 }
 
 function project_checks() {
-  echo "Checking for project update" >&2
+  echo "Checking for project update" >&1
   git fetch origin $CURRENT_BRANCH
 
   if [[ "$(check_git_updates)" == "Need to pull" ]]; then
-    echo "An update is available for IOTstack" >&2
+    echo "An update is available for IOTstack" >&1
     if [ ! -f .ignore_project_outofdate ]; then
       if (whiptail --title "Project update" --yesno "An update is available for IOTstack\nYou will not be reminded again until after you update.\nYou can upgrade manually by typing:\n  git pull origin $CURRENT_BRANCH \n\n\nWould you like to update now?" 14 78); then
         update_project
@@ -53,7 +53,7 @@ function project_checks() {
     fi
   else
     [ -f .ignore_project_outofdate ] && rm .ignore_project_outofdate
-    echo "Project is up to date" >&2
+    echo "Project is up to date" >&1
   fi
 }
 
@@ -75,15 +75,15 @@ do
         generate_container_ssh
         install_ssh_keys
         if [[ ! "$(user_in_group bluetooth)" == "notgroup" ]] && [[ ! "$(user_in_group bluetooth)" == "true" ]]; then
-          echo "User is NOT in 'bluetooth' group. Adding:" >&2
-          echo "sudo -E usermod -G bluetooth -a $USER" >&2
+          echo "User is NOT in 'bluetooth' group. Adding:" >&1
+          echo "sudo -E usermod -G bluetooth -a $USER" >&1
           echo "You will need to restart your system before the changes take effect."
           sudo -E usermod -G "bluetooth" -a $USER
         fi
 
         if [ ! "$(user_in_group docker)" == "true" ]; then
-          echo "User is NOT in 'docker' group. Adding:" >&2
-          echo "sudo -E usermod -G docker -a $USER" >&2
+          echo "User is NOT in 'docker' group. Adding:" >&1
+          echo "sudo -E usermod -G docker -a $USER" >&1
           echo "You will need to restart your system before the changes take effect."
           sudo -E usermod -G "docker" -a $USER
         fi

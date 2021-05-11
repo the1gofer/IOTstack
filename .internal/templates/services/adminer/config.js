@@ -18,16 +18,18 @@ const adminer = () => {
   retr.getHelp = () => {
     return {
       serviceName, // Required
-      website: 'https://www.adminer.org/', // Website of service
-      serviceDocs: '', // Official link to docs of service
-      docker: 'https://hub.docker.com/_/adminer/', // Docker of service
-      source: 'https://github.com/vrana/adminer/', // Sourcecode of service
-      community: '', // Community link
-      communityChat: '', // Discord, gitter etc
-      other: '', // Other links
-      rawMarkdownRemote: '', // Usually links to github raw help pages.
-      rawMarkdownLocal: '', // Relative path to docs locally
-      onlineRendered: 'https://sensorsiot.github.io/IOTstack/Containers/Adminer/' // Usually links to the github page for this service.
+      links: {
+        "Website": 'https://www.adminer.org/', // Website of service
+        serviceDocs: '', // Official link to docs of service
+        "Docker": 'https://hub.docker.com/_/adminer/', // Docker of service
+        "Source Code": 'https://github.com/vrana/adminer/', // Sourcecode of service
+        community: '', // Community link
+        communityChat: '', // Discord, gitter etc
+        other: '', // Other links
+        rawMarkdownRemote: '', // Usually links to github raw help pages.
+        rawMarkdownLocal: '', // Relative path to docs locally
+        "IOTstack Documentation for {$displayName}": 'https://sensorsiot.github.io/IOTstack/Containers/Adminer/' // Usually links to the github page for this service.
+      }
     };
   };
 

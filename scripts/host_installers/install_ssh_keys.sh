@@ -115,16 +115,16 @@ KEYS_ADDED=0
 KEYS_SKIPPED=0
 
 if [[ "$SSH_KEYS" == "Not Found" ]]; then
-  >&2 echo "Username '$GH_USERNAME' not found"
-  >&2 echo "URL: 'https://github.com/$GH_USERNAME.keys'"
+  >&1 echo "Username '$GH_USERNAME' not found"
+  >&1 echo "URL: 'https://github.com/$GH_USERNAME.keys'"
   exit 1
 fi
 
 if [[ ${#SSH_KEYS} -le 16 ]]; then
-  >&2 echo "Something went wrong retrieving SSH keys for '$GH_USERNAME'"
-  >&2 echo "URL: 'https://github.com/$GH_USERNAME.keys'"
-  >&2 echo "Result: "
-  >&2 echo "$SSH_KEYS"
+  >&1 echo "Something went wrong retrieving SSH keys for '$GH_USERNAME'"
+  >&1 echo "URL: 'https://github.com/$GH_USERNAME.keys'"
+  >&1 echo "Result: "
+  >&1 echo "$SSH_KEYS"
   exit 2
 fi
 
