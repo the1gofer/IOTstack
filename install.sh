@@ -291,7 +291,7 @@ function ssh_management() {
     echo "See the documentation in the github for more information." >&1
     echo "In the future, setting the environment variable 'SSH_KEY_INSTALL' to 'true' or 'false' will skip this prompt" >&1
     echo "" >&1
-    read -p "Generate and Install the SSH keys? [y/n]\n" -n 1 -r >&1
+    read -p "Generate and Install the SSH keys? [y/n]\n" -n 1 -r
     if [[ $REPLY =~ ^[Yy]$ ]]; then
       generate_container_ssh
       install_ssh_keys
