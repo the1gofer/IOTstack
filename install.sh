@@ -111,12 +111,12 @@ function user_in_group() {
 }
 
 function install_docker() {
-  echo ""
   DOCKERREBOOT="false"
   if command_exists docker; then
     echo "Docker already installed" >&1
   else
-    echo "Install Docker" >&1
+    echo "Install Docker:" >&1
+    echo "curl -fsSL https://get.docker.com | sh" >&1
     curl -fsSL https://get.docker.com | sh
     sudo -E usermod -aG docker $USER
     DOCKERREBOOT="true"
@@ -158,8 +158,8 @@ function check_host_ssh_keys() {
 }
 
 function check_ssh_state() {
-  echo ""
-  echo "check_ssh_state"
+  echo "" >&1
+  echo "Check SSH state" >&1
   printf "Checking Container keys...  " >&1
   if [[ "$(check_container_ssh)" == "false" ]]; then
     HAS_ERROR="true"
@@ -183,8 +183,8 @@ function check_ssh_state() {
 }
 
 function do_group_setup() {
-  echo ""
-  echo "do_group_setup"
+  echo "" >&1
+  echo "User group setup" >&1
   GROUPCHANGE="false"
   if [[ ! "$(user_in_group bluetooth)" == "notgroup" ]] && [[ ! "$(user_in_group bluetooth)" == "true" ]]; then
     echo "User is NOT in 'bluetooth' group. Adding:" >&1
@@ -212,8 +212,8 @@ function do_group_setup() {
 }
 
 function do_env_setup() {
-  echo ""
-  echo "do_env_setup"
+  echo "" >&1
+  echo "Host environment and dependency installation" >&1
   sudo -E apt update
   echo "Installing dependencies: git, wget, unzip, jq, netcat, screen" >&1
   sudo -E apt install git wget unzip jq netcat screen -y
@@ -226,8 +226,8 @@ function do_env_setup() {
 }
 
 function do_iotstack_setup() {
-  echo ""
-  echo "do_iotstack_setup"
+  echo "" >&1
+  echo "IOTstack setup" >&1
   if [ -f "./menu.sh" ]; then
     echo "'./menu.sh' file detected, will not reclone." >&1
   else
@@ -263,8 +263,8 @@ function generate_container_ssh() {
 }
 
 function install_ssh_keys() {
-  echo ""
-  echo "install_ssh_keys"
+  echo "" >&1
+  echo "Install SSH Keys" >&1
   touch $AUTH_KEYS_FILE
   if [ -f "$CONTAINER_KEYS_FILE" ]; then
     NEW_KEY="$(cat $CONTAINER_KEYS_FILE.pub)"
