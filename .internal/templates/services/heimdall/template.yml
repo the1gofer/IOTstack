@@ -8,6 +8,6 @@ heimdall:
     - PGID=1000
     - TZ=Etc/UTC
   ports:
-    - 8880:80
-    - 8883:443
+    - "8880:80"
+    - "8883:443"
   restart: unless-stopped

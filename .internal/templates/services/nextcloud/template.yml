@@ -25,7 +25,7 @@ nextcloud_db:
   image: linuxserver/mariadb
   container_name: nextcloud_db
   volumes:
-    - Unset:/var/lib/mysql # This line is updated during compile
+    - Unset:/var/lib/mysql # This line 'Unset' is updated during compile
   environment:
     - MYSQL_ROOT_PASSWORD=Unset
     - MYSQL_PASSWORD=Unset
