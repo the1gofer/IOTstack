@@ -29,10 +29,14 @@ const postgres = () => {
   retr.getHelp = () => {
     return {
       serviceName, // Required
-      website: '', // Website of service
-      rawMarkdownRemote: '', // Usually links to github raw help pages.
-      rawMarkdownLocal: '', // Relative path to docs locally
-      onlineRendered: '' // Usually links to the github page for this service.
+      links: {
+        "Website": 'https://www.postgresql.org/',
+        "Docker": 'https://hub.docker.com/_/postgres',
+        "Source Code": 'https://github.com/docker-library/postgres/',
+        rawMarkdownRemote: '', // Usually links to github raw help pages.
+        rawMarkdownLocal: '', // Relative path to docs locally
+        "IOTstack Documentation for {$displayName}": 'https://sensorsiot.github.io/IOTstack/Containers/PostgreSQL/'
+      }
     };
   };
 

@@ -22,10 +22,15 @@ const motioneye = () => {
   retr.getHelp = () => {
     return {
       serviceName, // Required
-      website: '', // Website of service
-      rawMarkdownRemote: '', // Usually links to github raw help pages.
-      rawMarkdownLocal: '', // Relative path to docs locally
-      onlineRendered: '' // Usually links to the github page for this service.
+      links: {
+        "Website": 'https://motion-project.github.io/', // Website of service
+        "Docker": 'https://hub.docker.com/r/jshridha/motioneye',
+        "Source Code": 'https://github.com/ccrisan/motioneye',
+        "{$displayName} Documentation": 'https://github.com/ccrisan/motioneye/wiki',
+        rawMarkdownRemote: '', // Usually links to github raw help pages.
+        rawMarkdownLocal: '', // Relative path to docs locally
+        "IOTstack Documentation for {$displayName}": 'https://sensorsiot.github.io/IOTstack/Containers/MotionEye/' // Usually links to the github page for this service.
+      }
     };
   };
 

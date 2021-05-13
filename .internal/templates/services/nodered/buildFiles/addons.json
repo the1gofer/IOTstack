@@ -12,6 +12,7 @@
     "addons": {
       "defaultOn": [
         "node-red-node-pi-gpiod",
+        "node-red-contrib-self-healing",
         "node-red-contrib-influxdb",
         "node-red-contrib-boolean-logic",
         "node-red-node-rbe",
@@ -21,6 +22,7 @@
       "essentials": [
         "node-red-contrib-redis",
         "node-red-node-pi-gpiod",
+        "node-red-contrib-self-healing",
         "node-red-contrib-influxdb",
         "node-red-contrib-boolean-logic",
         "node-red-node-rbe",

@@ -51,22 +51,41 @@ mkdir -p ./volumes/mosquitto/log
 
   const checkVolumesDirectory = () => {
     return `
+HAS_ERROR="false"
 if [[ ! -d ./volumes/mosquitto/data ]]; then
   echo "Mosquitto data directory is missing!"
-  sleep 2
+  HAS_ERROR="true"
 fi
 
 if [[ ! -d ./volumes/mosquitto/pwfile ]]; then
   echo "Mosquitto pwfile directory is missing!"
-  sleep 2
+  HAS_ERROR="true"
 fi
 
 if [[ ! -d ./volumes/mosquitto/log ]]; then
   echo "Mosquitto log directory is missing!"
-  sleep 2
+  HAS_ERROR="true"
+fi
+
+if [[ "$HAS_ERROR" == "true ]]; then
+  echo "Errors were detected when setting up Mosquitto"
+  sleep 1
 fi
 `;
   };
+
+  const setupVolumePermissions = (setUser1883) => {
+    if (setUser1883) {
+    return `
+echo "Updating mosquitto permissions:"
+echo "  chown -R 1883:1883 ./volumes/mosquitto/"
+sudo chown -R 1883:1883 ./volumes/mosquitto/
+    `;
+    }
+    return `
+echo "Mosquitto volume permissions not changed."
+    `;
+  }
 
   retr.compile = ({
     outputTemplateJson,
@@ -178,6 +197,13 @@ fi
           comment: 'Ensure required service directory exists for launch',
           multilineComment: null,
           code: checkVolumesDirectory()
+        });
+
+        postbuildScripts.push({
+          serviceName,
+          comment: 'Setup correct permissions for volume',
+          multilineComment: null,
+          code: setupVolumePermissions(true)
         });
 
         console.info(`ServiceBuilder:build() - '${serviceName}' completed`);

@@ -18,10 +18,14 @@ const homer = () => {
   retr.getHelp = () => {
     return {
       serviceName, // Required
-      website: 'https://github.com/bastienwirtz/homer', // Website of service
-      rawMarkdownRemote: '', // Usually links to github raw help pages.
-      rawMarkdownLocal: '', // Relative path to docs locally
-      onlineRendered: '' // Usually links to the github page for this service.
+      links: {
+        "Docker": 'https://hub.docker.com/r/b4bz/homer', // Website of service
+        "Source Code": 'https://github.com/bastienwirtz/homer', // Website of service
+        "Community Chat": 'https://gitter.im/homer-dashboard/community', // Discord, gitter etc
+        rawMarkdownRemote: '', // Usually links to github raw help pages.
+        rawMarkdownLocal: '', // Relative path to docs locally
+        "IOTstack Documentation for {$displayName}": 'https://sensorsiot.github.io/IOTstack/Containers/Homer/' // Usually links to the github page for this service.
+      }
     };
   };
 

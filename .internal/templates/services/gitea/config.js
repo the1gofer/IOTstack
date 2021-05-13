@@ -20,12 +20,12 @@ const gitea = () => {
       serviceName, // Required
       links: {
         "Website": 'https://gitea.io/', // Website of service
-        "Gitea Swagger": 'https://try.gitea.io/api/swagger', // Official link to docs of service
-        "Gitea Documentation": 'https://docs.gitea.io/en-us/', // Official link to docs of service
+        "{$displayName} Swagger": 'https://try.gitea.io/api/swagger', // Official link to docs of service
+        "{$displayName} Documentation": 'https://docs.gitea.io/en-us/', // Official link to docs of service
         "Docker": 'https://hub.docker.com/r/kunde21/gitea-arm', // Docker of service
         "Source Code": 'https://github.com/go-gitea/', // Sourcecode of service
         "Community": 'https://discourse.gitea.io/', // Community link
-        "CommunityChat": 'https://discord.gg/Gitea', // Discord, gitter etc
+        "Community Chat": 'https://discord.gg/Gitea', // Discord, gitter etc
         other: '', // Other links
         rawMarkdownRemote: '', // Usually links to github raw help pages.
         rawMarkdownLocal: '', // Relative path to docs locally

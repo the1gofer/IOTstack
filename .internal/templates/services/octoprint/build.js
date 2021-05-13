@@ -9,6 +9,7 @@ const ServiceBuilder = ({
   const { byName } = require('../../../src/utils/interpolate');
 
   const {
+    setImageTag,
     setModifiedPorts,
     setLoggingState,
     setNetworkMode,
@@ -61,6 +62,7 @@ fi
         console.info(`ServiceBuilder:compile() - '${serviceName}' started`);
 
         const compileResults = {
+          modifiedImage: setImageTag({ buildTemplate: outputTemplateJson, buildOptions, serviceName }),
           modifiedPorts: setModifiedPorts({ buildTemplate: outputTemplateJson, buildOptions, serviceName }),
           modifiedLogging: setLoggingState({ buildTemplate: outputTemplateJson, buildOptions, serviceName }),
           modifiedNetworkMode: setNetworkMode({ buildTemplate: outputTemplateJson, buildOptions, serviceName }),

@@ -40,10 +40,14 @@ const pihole = () => {
   retr.getHelp = () => {
     return {
       serviceName, // Required
-      website: '', // Website of service
-      rawMarkdownRemote: '', // Usually links to github raw help pages.
-      rawMarkdownLocal: '', // Relative path to docs locally
-      onlineRendered: '' // Usually links to the github page for this service.
+      links: {
+        "Website": 'https://pi-hole.net/',
+        "Docker": 'https://hub.docker.com/r/pihole/pihole',
+        "Source Code": 'https://github.com/pi-hole/pi-hole',
+        rawMarkdownRemote: '', // Usually links to github raw help pages.
+        rawMarkdownLocal: '', // Relative path to docs locally
+        "IOTstack Documentation for {$displayName}": 'https://sensorsiot.github.io/IOTstack/Containers/Pi-hole/' // Usually links to the github page for this service.
+      }
     };
   };
 

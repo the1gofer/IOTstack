@@ -144,6 +144,7 @@ const BuildController = ({ server, settings, version, logger }) => {
         };
 
         // Compile service options to JSON output
+        logger.debug('BuildController::buildStack: Compile started');
         for (let i = 0; i < templatesBuildLogic.length; i++) {
           await templatesBuildLogic[i].compile({
             outputTemplateJson: outputStack,
@@ -160,7 +161,9 @@ const BuildController = ({ server, settings, version, logger }) => {
             });
           }
         }
+        logger.debug('BuildController::buildStack: Compile completed');
 
+        logger.debug('BuildController::buildStack: Build started');
         await templatesBuildLogic.reduce((prom, buildLogic) => {
           return prom.then(async () => {
             if (typeof buildLogic.build === 'function') {
@@ -396,6 +399,7 @@ const BuildController = ({ server, settings, version, logger }) => {
         };
 
         // Compile service options to JSON output
+        logger.debug('BuildController::checkIssues: Compile started');
         for (let i = 0; i < templatesBuildLogic.length; i++) {
           await templatesBuildLogic[i].compile({
             outputTemplateJson: outputStack,
@@ -414,7 +418,9 @@ const BuildController = ({ server, settings, version, logger }) => {
           });
           return outputStack;
         });
+        logger.debug('BuildController::checkIssues: Compile complete');
 
+        logger.debug('BuildController::checkIssues: Issue check started');
         return templatesBuildLogic.reduce((prom, buildLogic) => {
           return prom.then(() => {
             if (typeof buildLogic.issues === 'function') {

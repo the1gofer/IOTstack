@@ -28,10 +28,19 @@ const nodered = ({
   retr.getHelp = () => {
     return {
       serviceName, // Required
-      website: '', // Website of service
-      rawMarkdownRemote: '', // Usually links to github raw help pages.
-      rawMarkdownLocal: '', // Relative path to docs locally
-      onlineRendered: '' // Usually links to the github page for this service.
+      links: {
+        "Website": 'https://nodered.org/', // Website of service
+        "Docker": 'https://hub.docker.com/r/nodered/node-red',
+        "Source Code": 'https://github.com/node-red',
+        "{$displayName} Documentation": 'https://nodered.org/docs/',
+        "Community": 'https://discourse.nodered.org/',
+        "{$displayName} Flows": 'https://flows.nodered.org/',
+        "Youtube": 'https://www.youtube.com/channel/UCQaB8NXBEPod7Ab8PPCLLAA',
+        "Blog": 'https://nodered.org/blog/',
+        rawMarkdownRemote: '', // Usually links to github raw help pages.
+        rawMarkdownLocal: '', // Relative path to docs locally
+        "IOTstack Documentation for {$displayName}": 'https://sensorsiot.github.io/IOTstack/Containers/Node-RED/' // Usually links to the github page for this service.
+      }
     };
   };
 

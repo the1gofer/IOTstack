@@ -19,16 +19,18 @@ const domoticz = () => {
   retr.getHelp = () => {
     return {
       serviceName, // Required
-      website: 'https://www.domoticz.com/', // Website of service
-      serviceDocs: '', // Official link to docs of service
-      docker: 'https://hub.docker.com/r/linuxserver/domoticz/', // Docker of service
-      source: 'https://github.com/linuxserver/docker-domoticz', // Sourcecode of service
-      community: '', // Community link
-      communityChat: 'https://discord.gg/YWrKVTn', // Discord, gitter etc
-      other: '', // Other links
-      rawMarkdownRemote: '', // Usually links to github raw help pages.
-      rawMarkdownLocal: '', // Relative path to docs locally
-      onlineRendered: 'https://sensorsiot.github.io/IOTstack/Containers/Domoticz/' // Usually links to the github page for this service.
+      links: {
+        "Website": 'https://www.domoticz.com/', // Website of service
+        serviceDocs: '', // Official link to docs of service
+        "Docker": 'https://hub.docker.com/r/linuxserver/domoticz/', // Docker of service
+        "Source Code": 'https://github.com/linuxserver/docker-domoticz', // Sourcecode of service
+        community: '', // Community link
+        "Community Chat (Discord)": 'https://discord.gg/YWrKVTn', // Discord, gitter etc
+        other: '', // Other links
+        rawMarkdownRemote: '', // Usually links to github raw help pages.
+        rawMarkdownLocal: '', // Relative path to docs locally
+        "IOTstack Documentation for {$displayName}": 'https://sensorsiot.github.io/IOTstack/Containers/Domoticz/' // Usually links to the github page for this service.
+      }
     };
   };
 

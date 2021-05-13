@@ -28,7 +28,7 @@ const heimdall = () => {
         other: '', // Other links
         rawMarkdownRemote: '', // Usually links to github raw help pages.
         rawMarkdownLocal: '', // Relative path to docs locally
-        "IOTstack Documentation for {$displayName}": 'https://sensorsiot.github.io/IOTstack/Containers/Heimdall/' // Usually links to the github page for this service.
+        "IOTstack Documentation for {$displayName}": 'https://sensorsiot.github.io/IOTstack/Containers/Heimdall/'
       }
     };
   };

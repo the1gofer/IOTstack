@@ -7,10 +7,13 @@ const ServiceBuilder = ({
   const serviceName = 'adminer';
 
   const {
+    setImageTag,
     setModifiedPorts,
     setLoggingState,
     setNetworkMode,
-    setNetworks
+    setNetworks,
+    setDevices,
+    setEnvironmentVariables
   } = require('../../../src/utils/commonCompileLogic');
 
   const {
@@ -40,10 +43,13 @@ const ServiceBuilder = ({
         console.info(`ServiceBuilder:compile() - '${serviceName}' started`);
 
         const compileResults = {
+          modifiedImage: setImageTag({ buildTemplate: outputTemplateJson, buildOptions, serviceName }),
           modifiedPorts: setModifiedPorts({ buildTemplate: outputTemplateJson, buildOptions, serviceName }),
           modifiedLogging: setLoggingState({ buildTemplate: outputTemplateJson, buildOptions, serviceName }),
           modifiedNetworkMode: setNetworkMode({ buildTemplate: outputTemplateJson, buildOptions, serviceName }),
-          modifiedNetworks: setNetworks({ buildTemplate: outputTemplateJson, buildOptions, serviceName })
+          modifiedNetworks: setNetworks({ buildTemplate: outputTemplateJson, buildOptions, serviceName }),
+          modifiedEnvironment: setEnvironmentVariables({ buildTemplate: outputTemplateJson, buildOptions, serviceName }),
+          modifiedDevices: setDevices({ buildTemplate: outputTemplateJson, buildOptions, serviceName })
         };
         console.info(`ServiceBuilder:compile() - '${serviceName}' Results:`, compileResults);
 

@@ -12,7 +12,7 @@ import { byName } from '../../utils/interpolate';
 import styles from './help-and-docs.module.css';
 
 const getModalStyle = () => {
-  const top = 15;
+  const top = 35;
   const left = 50;
 
   return {
