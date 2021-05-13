@@ -286,6 +286,7 @@ function ssh_management() {
   elif [[ "$SSH_KEY_INSTALL" == "false" ]]; then
     echo "Skipping container SSH key install" >&1
   else
+    echo "" >&1
     echo "IOTstack runs its menu and API inside docker containers. In order for these containers to be able to execute commands on your host, SSH keys are required to be generated and installed." >&1
     echo "These keys never leave your host and are only consumed by the menu containers. You can set these up yourself later, either manually or by running ./menu.sh --run-env-setup" >&1
     echo "See the documentation in the github for more information." >&1
