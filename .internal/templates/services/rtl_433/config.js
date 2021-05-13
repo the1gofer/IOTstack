@@ -15,10 +15,12 @@ const rtl_433 = () => {
   retr.getHelp = () => {
     return {
       serviceName, // Required
-      website: '', // Website of service
-      rawMarkdownRemote: '', // Usually links to github raw help pages.
-      rawMarkdownLocal: '', // Relative path to docs locally
-      onlineRendered: '' // Usually links to the github page for this service.
+      links: {
+        "Source Code": 'https://github.com/merbanan/rtl_433',
+        rawMarkdownRemote: '', // Usually links to github raw help pages.
+        rawMarkdownLocal: '', // Relative path to docs locally
+        "IOTstack Documentation for {$displayName}": 'https://sensorsiot.github.io/IOTstack/Containers/RTL_433-docker/'
+      }
     };
   };
 
