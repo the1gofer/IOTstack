@@ -278,6 +278,7 @@ function install_ssh_keys() {
   fi
 }
 
+PROMPT_SSH="false"
 function ssh_management() {
   if [[ "$SSH_KEY_INSTALL" == "true" ]]; then
     generate_container_ssh
@@ -291,14 +292,7 @@ function ssh_management() {
     echo "See the documentation in the github for more information." >&1
     echo "In the future, setting the environment variable 'SSH_KEY_INSTALL' to 'true' or 'false' will skip this prompt" >&1
     echo "" >&1
-    read -p "Generate and Install the SSH keys? [y/n]\n" -n 1 -r
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-      generate_container_ssh
-      install_ssh_keys
-      check_ssh_state
-    else
-      echo "Skipping container SSH key install" >&1
-    fi
+    PROMPT_SSH="true"
   fi
 }
 
@@ -306,6 +300,16 @@ function ssh_management() {
 do_env_setup
 do_iotstack_setup
 ssh_management
+if [[ "$PROMPT_SSH" == "true" ]]; then
+  read -p "Generate and Install the SSH keys? [y/n]\n" -n 1 -r
+  if [[ $REPLY =~ ^[Yy]$ ]]; then
+    generate_container_ssh
+    install_ssh_keys
+    check_ssh_state
+  else
+    echo "Skipping container SSH key install" >&1
+  fi
+fi
 install_docker
 do_group_setup
 
