@@ -301,13 +301,14 @@ do_env_setup
 do_iotstack_setup
 ssh_management
 if [[ "$PROMPT_SSH" == "true" ]]; then
-  read -p "Generate and Install the SSH keys? [y/n]\n" -n 1 -r
+  read -p "Generate and Install the SSH keys? [y/n]" -n 1 -r
+  echo ""
   if [[ $REPLY =~ ^[Yy]$ ]]; then
     generate_container_ssh
     install_ssh_keys
     check_ssh_state
   else
-    echo "Skipping container SSH key install" >&1
+    echo "Skipping container SSH key install"
   fi
 fi
 install_docker
