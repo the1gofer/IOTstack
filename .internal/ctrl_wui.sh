@@ -34,7 +34,31 @@ else
       echo "Building '$FULL_NAME'"
       echo "This may take 5 to 10 minutes. CLI Menu will open once build is completed."
       docker pull node:14 # Docker occasionally fails to pull image when building when it is not cached.
+      echo ""
       docker build --quiet -t $FULL_NAME -f ./.internal/wui.Dockerfile .
+      DBR=$?
+      if [[ ! $DBR -eq 0 ]]; then
+        echo ""
+        echo "-----------------------------------"
+        echo ""
+        echo "Docker build encountered an error when building '$FULL_NAME'."
+        echo "If this error is stating that there's no permission to read a file or directory then change the permissions or owner to one that the '$HOSTUSER' user can read."
+        echo ""
+        echo "Examples:"
+        echo "  Update owner:"
+        echo "    sudo chown -R $HOSTUSER $(pwd)/.internal/"
+        echo ""
+        echo "  Update permissions:"
+        echo "    sudo chmod -R 755 $(pwd)/.internal/"
+        echo ""
+        echo "  Checking owner and permissions:"
+        echo "    ls -ahl $(pwd)/.internal/"
+        echo ""
+        echo "-----------------------------------"
+        echo ""
+        sleep 1
+        exit 2
+      fi
     else
       echo "Build for '$FULL_NAME' already exists. Skipping..."
     fi
