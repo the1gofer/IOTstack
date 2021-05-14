@@ -28,6 +28,7 @@ else
   else
     if [[ "$(docker images -q $FULL_NAME 2> /dev/null)" == "" ]]; then
       echo "Building '$FULL_NAME'"
+      echo "This may take 5 to 10 minutes."
       docker pull python:3 # Docker occasionally fails to pull image when building when it is not cached.
       echo ""
       docker build --quiet -t $FULL_NAME -f ./.internal/pycli.Dockerfile .
