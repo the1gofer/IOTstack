@@ -47,7 +47,7 @@ const pihole = () => {
   retr.getMeta = () => {
     return {
       serviceName, // Required
-      displayName: 'Redis (Untested)',
+      displayName: 'Redis',
       serviceTypeTags: ['database', 'cache'],
       iconUri: '/logos/redis.png'
     };

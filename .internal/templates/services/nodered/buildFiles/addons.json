@@ -75,7 +75,8 @@
         "node-red-contrib-tf-function",
         "node-red-contrib-tf-model",
         "node-red-contrib-post-object-detection",
-        "node-red-contrib-bert-tokenizer"
+        "node-red-contrib-bert-tokenizer",
+        "node-red-contrib-redis"
       ]
     }
   }
