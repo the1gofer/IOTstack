@@ -7,12 +7,14 @@ const ServiceBuilder = ({
   const serviceName = 'adguardhome';
 
   const {
+    setImageTag,
     setModifiedPorts,
     setLoggingState,
     setNetworkMode,
     setNetworks,
-    setDevices,
-    setEnvironmentVariables
+    setVolumes,
+    setEnvironmentVariables,
+    setDevices
   } = require('../../../src/utils/commonCompileLogic');
 
   const {
@@ -54,7 +56,7 @@ if [[ ! -d ./volumes/adguardhome/confdir ]]; then
   HAS_ERROR="true"
 fi
 
-if [[ "$HAS_ERROR" == "true ]]; then
+if [[ "$HAS_ERROR" == "true" ]]; then
     sleep 1
 fi
 `;
@@ -69,10 +71,12 @@ fi
         console.info(`ServiceBuilder:compile() - '${serviceName}' started`);
 
         const compileResults = {
+          modifiedImage: setImageTag({ buildTemplate: outputTemplateJson, buildOptions, serviceName }),
           modifiedPorts: setModifiedPorts({ buildTemplate: outputTemplateJson, buildOptions, serviceName }),
           modifiedLogging: setLoggingState({ buildTemplate: outputTemplateJson, buildOptions, serviceName }),
           modifiedNetworkMode: setNetworkMode({ buildTemplate: outputTemplateJson, buildOptions, serviceName }),
           modifiedNetworks: setNetworks({ buildTemplate: outputTemplateJson, buildOptions, serviceName }),
+          modifiedVolumes: setVolumes({ buildTemplate: outputTemplateJson, buildOptions, serviceName }),
           modifiedEnvironment: setEnvironmentVariables({ buildTemplate: outputTemplateJson, buildOptions, serviceName }),
           modifiedDevices: setDevices({ buildTemplate: outputTemplateJson, buildOptions, serviceName })
         };

@@ -8,10 +8,14 @@ const ServiceBuilder = ({
   const serviceName = 'mosquitto';
 
   const {
+    setImageTag,
     setModifiedPorts,
     setLoggingState,
     setNetworkMode,
-    setNetworks
+    setNetworks,
+    setVolumes,
+    setEnvironmentVariables,
+    setDevices
   } = require('../../../src/utils/commonCompileLogic');
 
   const {
@@ -34,7 +38,7 @@ const ServiceBuilder = ({
 
   const checkServiceFilesCopied = () => {
     return `
-if [[ ! -f ./services/mosquitto/mosquitto.conf ]]; then
+if [[ ! -f ./services/mosquitto/config/mosquitto.conf ]]; then
   echo "Mosquitto config file is missing!"
   sleep 2
 fi
@@ -44,6 +48,7 @@ fi
   const createVolumesDirectory = () => {
     return `
 mkdir -p ./volumes/mosquitto/data
+mkdir -p ./volumes/mosquitto/config
 mkdir -p ./volumes/mosquitto/pwfile
 mkdir -p ./volumes/mosquitto/log
 `;
@@ -57,8 +62,8 @@ if [[ ! -d ./volumes/mosquitto/data ]]; then
   HAS_ERROR="true"
 fi
 
-if [[ ! -d ./volumes/mosquitto/pwfile ]]; then
-  echo "Mosquitto pwfile directory is missing!"
+if [[ ! -d ./volumes/mosquitto/config ]]; then
+  echo "Mosquitto config directory is missing!"
   HAS_ERROR="true"
 fi
 
@@ -67,25 +72,17 @@ if [[ ! -d ./volumes/mosquitto/log ]]; then
   HAS_ERROR="true"
 fi
 
-if [[ "$HAS_ERROR" == "true ]]; then
+if [[ ! -d ./volumes/mosquitto/pwfile ]]; then
+  echo "Mosquitto pwfile directory is missing!"
+  HAS_ERROR="true"
+fi
+
+if [[ "$HAS_ERROR" == "true" ]]; then
   echo "Errors were detected when setting up Mosquitto"
   sleep 1
 fi
 `;
   };
-
-  const setupVolumePermissions = (setUser1883) => {
-    if (setUser1883) {
-    return `
-echo "Updating mosquitto permissions:"
-echo "  chown -R 1883:1883 ./volumes/mosquitto/"
-sudo chown -R 1883:1883 ./volumes/mosquitto/
-    `;
-    }
-    return `
-echo "Mosquitto volume permissions not changed."
-    `;
-  }
 
   retr.compile = ({
     outputTemplateJson,
@@ -96,10 +93,14 @@ echo "Mosquitto volume permissions not changed."
         console.info(`ServiceBuilder:compile() - '${serviceName}' started`);
 
         const compileResults = {
+          modifiedImage: setImageTag({ buildTemplate: outputTemplateJson, buildOptions, serviceName }),
           modifiedPorts: setModifiedPorts({ buildTemplate: outputTemplateJson, buildOptions, serviceName }),
           modifiedLogging: setLoggingState({ buildTemplate: outputTemplateJson, buildOptions, serviceName }),
           modifiedNetworkMode: setNetworkMode({ buildTemplate: outputTemplateJson, buildOptions, serviceName }),
-          modifiedNetworks: setNetworks({ buildTemplate: outputTemplateJson, buildOptions, serviceName })
+          modifiedNetworks: setNetworks({ buildTemplate: outputTemplateJson, buildOptions, serviceName }),
+          modifiedVolumes: setVolumes({ buildTemplate: outputTemplateJson, buildOptions, serviceName }),
+          modifiedEnvironment: setEnvironmentVariables({ buildTemplate: outputTemplateJson, buildOptions, serviceName }),
+          modifiedDevices: setDevices({ buildTemplate: outputTemplateJson, buildOptions, serviceName })
         };
         console.info(`ServiceBuilder:compile() - '${serviceName}' Results:`, compileResults);
 
@@ -171,12 +172,40 @@ echo "Mosquitto volume permissions not changed."
     return new Promise((resolve, reject) => {
       try {
         console.info(`ServiceBuilder:build() - '${serviceName}' started`);
-        const mosquittoConfFilePath = path.join(__dirname, settings.paths.serviceFiles, 'mosquitto.conf');
+        const mosquittoConfFilePath = path.join(__dirname, settings.paths.serviceFiles, 'config', 'mosquitto.conf');
         zipList.push({
           fullPath: mosquittoConfFilePath,
-          zipName: '/services/mosquitto/mosquitto.conf'
+          zipName: '/services/mosquitto/config/mosquitto.conf'
         });
         console.debug(`ServiceBuilder:build() - '${serviceName}' Added '${mosquittoConfFilePath}' to zip`);
+
+        const mosquittoAclFilePath = path.join(__dirname, settings.paths.serviceFiles, 'config', 'filter.acl');
+        zipList.push({
+          fullPath: mosquittoAclFilePath,
+          zipName: '/services/mosquitto/config/filter.acl'
+        });
+        console.debug(`ServiceBuilder:build() - '${serviceName}' Added '${mosquittoAclFilePath}' to zip`);
+
+        const mosquittoPwFilePath = path.join(__dirname, settings.paths.serviceFiles, 'pwfile', 'pwfile');
+        zipList.push({
+          fullPath: mosquittoPwFilePath,
+          zipName: '/services/mosquitto/pwfile/pwfile'
+        });
+        console.debug(`ServiceBuilder:build() - '${serviceName}' Added '${mosquittoPwFilePath}' to zip`);
+
+        const mosquittoDockerFilePath = path.join(__dirname, settings.paths.buildFiles, 'Dockerfile');
+        zipList.push({
+          fullPath: mosquittoDockerFilePath,
+          zipName: '/services/mosquitto/Dockerfile'
+        });
+        console.debug(`ServiceBuilder:build() - '${serviceName}' Added '${mosquittoDockerFilePath}' to zip`);
+
+        const mosquittoDockerEntryPointFilePath = path.join(__dirname, settings.paths.buildFiles, 'docker-entrypoint.sh');
+        zipList.push({
+          fullPath: mosquittoDockerEntryPointFilePath,
+          zipName: '/services/mosquitto/docker-entrypoint.sh'
+        });
+        console.debug(`ServiceBuilder:build() - '${serviceName}' Added '${mosquittoDockerEntryPointFilePath}' to zip`);
 
         postbuildScripts.push({
           serviceName,
@@ -197,13 +226,6 @@ echo "Mosquitto volume permissions not changed."
           comment: 'Ensure required service directory exists for launch',
           multilineComment: null,
           code: checkVolumesDirectory()
-        });
-
-        postbuildScripts.push({
-          serviceName,
-          comment: 'Setup correct permissions for volume',
-          multilineComment: null,
-          code: setupVolumePermissions(true)
         });
 
         console.info(`ServiceBuilder:build() - '${serviceName}' completed`);
