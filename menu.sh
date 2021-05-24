@@ -205,7 +205,7 @@ else
     PYCLI_REBUILD_DONE="not completed"
     WUI_REBUILD_DONE="not completed"
 
-    until [[ $SLEEP_COUNTER -gt 661 || ("$API_REBUILD_DONE" == "completed" && "$PYCLI_REBUILD_DONE" == "completed" && "$WUI_REBUILD_DONE" == "completed") ]]; do
+    until [[ $SLEEP_COUNTER -gt 721 || ("$API_REBUILD_DONE" == "completed" && "$PYCLI_REBUILD_DONE" == "completed" && "$WUI_REBUILD_DONE" == "completed") ]]; do
       if [[ ! "$(docker images -q iostack_api:$VERSION)" == "" && ! $API_REBUILD_DONE == "completed" ]]; then
         API_REBUILD_DONE="completed"
         echo ""
@@ -240,16 +240,18 @@ else
     echo ""
   fi
 
-  if [[ $SLEEP_COUNTER -gt 660 ]]; then
+  if [[ $SLEEP_COUNTER -gt 720 ]]; then
     echo ""
     echo "Build timeout occured"
-    echo "Something seems to have gone wrong when rebuilding the menu docker images."
     echo "It's possible the container(s) just need a little more time to finish building."
-    echo "You can try rerunning the menu after waiting a short time."
+    echo "This error can occur if your system is busy running other processes while building the containers."
+    echo "Only the API and PyCLI containers need to build to run the CLI menu."
+    echo "Only the API and WUI containers need to build to view the web UI."
+    echo "You can also try rerunning the menu after waiting a short time."
     echo ""
-    echo "API Rebuild: $API_REBUILD_DONE"
-    echo "PyCLI Rebuild: $PYCLI_REBUILD_DONE"
-    echo "WUI Rebuild: $WUI_REBUILD_DONE"
+    echo "API Build: $API_REBUILD_DONE"
+    echo "PyCLI Build: $PYCLI_REBUILD_DONE"
+    echo "WUI Build: $WUI_REBUILD_DONE"
     echo ""
     if [[ "$SKIPCHECKS" == "false" ]]; then
       read -n 1 -s -r -p "Press any key to continue"
