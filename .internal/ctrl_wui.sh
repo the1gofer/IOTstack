@@ -1,6 +1,10 @@
 #!/bin/bash
 
-source ./.internal/meta.sh
+CPWD=$(pwd)
+
+cd .internal/ 2>/dev/null
+
+source ./meta.sh
 DNAME=iostack_wui
 FULL_NAME="$DNAME:$VERSION"
 
@@ -85,3 +89,5 @@ else
 
   # docker run -p $WUI_PORT:$WUI_PORT -it $FULL_NAME /bin/bash
 fi
+
+cd $CPWD

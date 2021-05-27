@@ -1,6 +1,10 @@
 #!/bin/bash
 
-source ./.internal/meta.sh
+CPWD=$(pwd)
+
+cd .internal/ 2>/dev/null
+
+source ./meta.sh
 DNAME=iostack_pycli
 FULL_NAME="$DNAME:$VERSION"
 
@@ -111,3 +115,5 @@ else
     echo "IOTstack CLI is running. Check with 'docker ps'."
   fi
 fi
+
+cd $CPWD

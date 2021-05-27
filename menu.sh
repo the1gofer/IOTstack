@@ -194,11 +194,17 @@ else
     sleep 1
     echo ""
 
+    # Change directory to .internal for docker build
+    CPWD=$(pwd)
+    cd .internal/
+
     # Build all asynchronously, so it's faster. Give PyCLI a slight headstart to keep the user waiting the shortest time.
-    docker build --quiet -t iostack_pycli:$VERSION -f ./.internal/pycli.Dockerfile . > /dev/null &
+    docker build --quiet -t iostack_pycli:$VERSION -f ./pycli.Dockerfile . > /dev/null &
     sleep 1
-    docker build --quiet -t iostack_api:$VERSION -f ./.internal/api.Dockerfile . > /dev/null &
-    docker build --quiet -t iostack_wui:$VERSION -f ./.internal/wui.Dockerfile . > /dev/null &
+    docker build --quiet -t iostack_api:$VERSION -f ./api.Dockerfile . > /dev/null &
+    docker build --quiet -t iostack_wui:$VERSION -f ./wui.Dockerfile . > /dev/null &
+
+    cd $CPWD # Change back to previous directory.
 
     SLEEP_COUNTER=0
     API_REBUILD_DONE="not completed"
@@ -284,9 +290,15 @@ fi
 # If PyCLI is already running then reattach
 PYCLI_ID="$(docker ps --format '{{.ID}} {{.Image}}' | grep -w iostack_pycli:$VERSION | cut -d ' ' -f1 | head -n 1)"
 if [[ "$PYCLI_ID" == "" ]]; then
-  bash ./.internal/docker_menu.sh
+  CPWD=$(pwd)
+  cd .internal/
+  bash ./docker_menu.sh
+  cd $CPWD
 else
-  bash ./.internal/ctrl_api.sh > /dev/null
+  CPWD=$(pwd)
+  cd .internal/
+  bash ./ctrl_api.sh > /dev/null
+  cd $CPWD
   echo "PyCLI menu is already running. Reattaching..."
   docker attach --sig-proxy=false $PYCLI_ID
 fi

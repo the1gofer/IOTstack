@@ -1,6 +1,10 @@
 #!/bin/bash
 
-source ./.internal/meta.sh
+CPWD=$(pwd)
+
+cd .internal/ 2>/dev/null
+
+source ./meta.sh
 DNAME=iostack_api
 FULL_NAME="$DNAME:$VERSION"
 
@@ -147,3 +151,5 @@ else
     echo "IOTstack API Server is running. Check port: $API_PORT or run 'docker ps'"
   fi
 fi
+
+cd $CPWD
