@@ -4,7 +4,7 @@
 export VERSION="v0.0.1"
 
 # Used for the interal docker menu instances to know where IOTstack is installed
-export IOTSTACKPWD="${IOTSTACK_IOTSTACKPWD:-$(pwd)}"
+export IOTSTACKPWD="${IOTSTACK_IOTSTACKPWD:-$(cd .. && pwd)}"
 
 # Used for the interal docker menu instances to know which user to set permissions for, and for SSH connections
 export HOSTUSER="${IOTSTACK_HOSTUSER:-$(whoami)}"

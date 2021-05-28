@@ -181,7 +181,14 @@ else
     echo "You either recently installed or upgraded IOTstack. The menu docker images need to be rebuilt in order for the menu to run correctly. This will take about 10 minutes and is completely automatic."
     echo ""
     echo "Spinning down container instances"
-    bash ./.internal/docker_menu.sh stop
+    # Change directory to .internal for docker build
+    CPWD=$(pwd)
+   
+    if [[ ! "$(basename $CPWD)" == ".internal" ]]; then
+      cd .internal/
+    fi
+
+    bash ./docker_menu.sh stop
 
     sleep 1
 
@@ -193,10 +200,6 @@ else
     echo "Beginning menu build process now."
     sleep 1
     echo ""
-
-    # Change directory to .internal for docker build
-    CPWD=$(pwd)
-    cd .internal/
 
     # Build all asynchronously, so it's faster. Give PyCLI a slight headstart to keep the user waiting the shortest time.
     docker build --quiet -t iostack_pycli:$VERSION -f ./pycli.Dockerfile . > /dev/null &
@@ -291,12 +294,16 @@ fi
 PYCLI_ID="$(docker ps --format '{{.ID}} {{.Image}}' | grep -w iostack_pycli:$VERSION | cut -d ' ' -f1 | head -n 1)"
 if [[ "$PYCLI_ID" == "" ]]; then
   CPWD=$(pwd)
-  cd .internal/
+  if [[ ! "$(basename $CPWD)" == ".internal" ]]; then
+    cd .internal/
+  fi
   bash ./docker_menu.sh
   cd $CPWD
 else
   CPWD=$(pwd)
-  cd .internal/
+  if [[ ! "$(basename $CPWD)" == ".internal" ]]; then
+    cd .internal/
+  fi
   bash ./ctrl_api.sh > /dev/null
   cd $CPWD
   echo "PyCLI menu is already running. Reattaching..."

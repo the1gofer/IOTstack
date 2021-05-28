@@ -2,7 +2,9 @@
 
 CPWD=$(pwd)
 
-cd .internal/ 2>/dev/null
+if [[ ! "$(basename $CPWD)" == ".internal" ]]; then
+  cd .internal/
+fi
 
 source ./meta.sh
 DNAME=iostack_wui
@@ -29,9 +31,9 @@ else
     docker stop $(docker ps -q --format "{{.ID}} {{.Ports}}" | grep "$WUI_PORT" | cut -d ' ' -f1) 2> /dev/null
     echo ""
     echo "Rebuilding container:"
-    echo "docker build --no-cache -t $FULL_NAME -f ./.internal/wui/wui.dev.Dockerfile ."
+    echo "docker build --no-cache -t $FULL_NAME -f ./wui/wui.dev.Dockerfile ."
     docker pull node:14 # Docker occasionally fails to pull image when building when it is not cached.
-    docker build --no-cache -t $FULL_NAME -f ./.internal/wui/wui.dev.Dockerfile .
+    docker build --no-cache -t $FULL_NAME -f ./wui/wui.dev.Dockerfile .
   else
     if [[ "$(docker images -q $FULL_NAME 2> /dev/null)" == "" ]]; then
       echo "React WUI production build not found."
@@ -39,7 +41,7 @@ else
       echo "This may take 5 to 10 minutes."
       docker pull node:14 # Docker occasionally fails to pull image when building when it is not cached.
       echo ""
-      docker build --quiet -t $FULL_NAME -f ./.internal/wui.Dockerfile .
+      docker build --quiet -t $FULL_NAME -f ./wui.Dockerfile .
       DBR=$?
       if [[ ! $DBR -eq 0 ]]; then
         echo ""
@@ -50,13 +52,13 @@ else
         echo ""
         echo "Examples:"
         echo "  Update owner:"
-        echo "    sudo chown -R $HOSTUSER $(pwd)/.internal/"
+        echo "    sudo chown -R $HOSTUSER $IOTSTACKPWD/.internal/"
         echo ""
         echo "  Update permissions:"
-        echo "    sudo chmod -R 755 $(pwd)/.internal/"
+        echo "    sudo chmod -R 755 $IOTSTACKPWD/.internal/"
         echo ""
         echo "  Checking owner and permissions:"
-        echo "    ls -ahl $(pwd)/.internal/"
+        echo "    ls -ahl $IOTSTACKPWD/.internal/"
         echo ""
         echo "-----------------------------------"
         echo ""
