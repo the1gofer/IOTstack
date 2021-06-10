@@ -16,7 +16,7 @@ const influxDb = () => {
         }
       ],
       volumes: true,
-      imageTags: ['1.8.4', 'latest'],
+      imageTags: ['1.8', '1.8.4', 'latest'],
       networks: true,
       logging: true
     }
