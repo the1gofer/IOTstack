@@ -1,38 +1,35 @@
 nextcloud:
-  image: nextcloud
   container_name: nextcloud
+  image: nextcloud
+  restart: unless-stopped
+  environment:
+    - MYSQL_HOST=nextcloud_db
+    - MYSQL_PASSWORD=Unset # removed during compile
+    - MYSQL_DATABASE=nextcloud
+    - MYSQL_USER=nextcloud
   ports:
     - "9321:80"
   volumes:
-    - ./volumes/nextcloud/html:/var/www/html:rw
-    - ./volumes/nextcloud/db:/var/lib/mysql # This line is removed during compile
-  restart: unless-stopped
-  depends_on: 
-    - nextcloud_db
-  links:
+    - ./volumes/nextcloud/html:/var/www/html
+  depends_on:
     - nextcloud_db
   networks:
     - iotstack_nw
     - nextcloud_internal
-  environment:
-    - MYSQL_HOST=nextcloud_db
-    - MYSQL_PASSWORD=Unset
-    - MYSQL_DATABASE=nextcloud
-    - MYSQL_USER=nextcloud
-    - MYSQL_ROOT_PASSWORD=Unset # This line is removed during compile
 
 nextcloud_db:
-  image: linuxserver/mariadb
   container_name: nextcloud_db
-  volumes:
-    - Unset:/var/lib/mysql # This line 'Unset' is updated during compile
+  image: ghcr.io/linuxserver/mariadb
+  restart: unless-stopped
   environment:
-    - MYSQL_ROOT_PASSWORD=Unset
-    - MYSQL_PASSWORD=Unset
+    - TZ=Etc/UTC
+    - PUID=1000
+    - PGID=1000
+    - MYSQL_ROOT_PASSWORD=Unset # removed during compile
+    - MYSQL_PASSWORD=Unset # removed during compile
     - MYSQL_DATABASE=nextcloud
     - MYSQL_USER=nextcloud
-  restart: unless-stopped
+  volumes:
+    - ./volumes/nextcloud/db:/config
   networks:
     - nextcloud_internal
-
- 
