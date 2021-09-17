@@ -1,14 +1,17 @@
 # Download base image
 FROM eclipse-mosquitto:latest
 
+# see https://github.com/alpinelinux/docker-alpine/issues/98
+RUN sed -i 's/https/http/' /etc/apk/repositories
+
 # Add support tools
 RUN apk update && apk add --no-cache rsync tzdata
 
 # where IOTstack template files are stored
-ENV MOSQUITTO_IOTSTACK_DEFAULTS="/iotstack_defaults"
+ENV IOTSTACK_DEFAULTS_DIR="iotstack_defaults"
 
 # copy template files to image
-COPY --chown=mosquitto:mosquitto . /${MOSQUITTO_IOTSTACK_DEFAULTS}
+COPY --chown=mosquitto:mosquitto ${IOTSTACK_DEFAULTS_DIR} /${IOTSTACK_DEFAULTS_DIR}
 
 # replace the docker entry-point script
 ENV IOTSTACK_ENTRY_POINT="docker-entrypoint.sh"
