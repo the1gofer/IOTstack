@@ -503,6 +503,9 @@ case $mainmenu_selection in
 			yml_builder "$container"
 			echo "$container" >>./services/selection.txt
 		done
+		
+		# append network definitions
+		cat ./.templates/env.yml >> $TMP_DOCKER_COMPOSE_YML
 
 		if [ -f "$DOCKER_COMPOSE_OVERRIDE_YML" ]; then
 			do_python3_pip
