@@ -512,7 +512,7 @@ The agent is invoked 30 seconds after the container starts, and every 30 seconds
 * Publishes a retained MQTT message to the broker running in the same container. The message payload is the current date and time, and the default topic string is:
 
 	```
-	iotstack/mosquitto/healthcheck
+	IOTstack/mosquitto/healthcheck
 	```
 
 * Subscribes to the same broker for the same topic for a single message event.
